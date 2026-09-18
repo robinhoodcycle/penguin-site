@@ -146,6 +146,16 @@
     .actions { gap: 10px; margin-top: 14px; } .x { width: 40px; height: 40px; }
     .hero { position: relative; left: auto; bottom: auto; transform: none; width: min(100%, 520px); height: auto; aspect-ratio: 1 / 1; margin: 10px auto -8vw; animation: none; }
     .disclosure { position: static; font-size: 11px; max-width: none; padding: 0 20px 28px; }
+    .wordmark { text-align: left; margin: 22px 20px 4px; }
+    .wordmark b { font-size: 34px; }
+    .wordmark small { font-size: 11px; letter-spacing: 0.18em; margin-top: 6px; }
+    .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 12px; margin-top: 18px; }
+    .figs div { min-width: 0; }
+    .figs dt { font-size: 10px; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .figs dd { font-size: 15px; }
+    .ca { margin-top: 16px; gap: 10px; }
+    .ca code { font-size: 11px; max-width: none; flex: 1 1 100%; line-height: 1.45; }
+    .figs, .ca { padding-bottom: 2px; }
     .sheet__inner { padding: 64px 20px 60px; }
   }
 </style>
@@ -170,10 +180,6 @@
   .figs dd.down { color: #C4532E; }
   .ca { margin-top: 1vw; display: flex; align-items: center; gap: 0.5vw; flex-wrap: wrap; }
   .ca code { font: 400 0.68vw / 1.3 var(--mono); color: var(--mu); word-break: break-all; max-width: 22vw; }
-  @media (max-width: 900px) {
-    .figs dt { font-size: 9px; } .figs dd { font-size: 13px; } .ca code { font-size: 10px; max-width: 70vw; }
-    .wordmark small { font-size: 9px; }
-  }
 </style>
 </head>
 <body>
@@ -215,15 +221,15 @@
 
 <div class="scatter" aria-hidden="true">
   <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:7vw;--y:48vh;--s:16vh;--dur:7.1s;--delay:-2.1s;--r0:-4deg;--r1:3deg;--dy:-11px;--i:1"><span class="cube__lift"><img src="brand/assets/cubes/H2O.webp" alt=""></span><span class="cube__tag">H2O California Water</span></a>
-  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:70vh;--s:11vh;--dur:6.9s;--delay:-1.2s;--r0:5deg;--r1:-2deg;--dy:-9px;--i:2"><span class="cube__lift"><img src="brand/commodities/png/GLD.png" alt=""></span><span class="cube__tag">GLD Gold</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:19vw;--y:64vh;--s:8vh;--dur:8.8s;--delay:-6s;--r0:2deg;--r1:-5deg;--dy:-7px;--i:3"><span class="cube__lift"><img src="brand/commodities/png/DAYTONA.png" alt=""></span><span class="cube__tag">DAYTONA Rolex Daytona</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:13vw;--y:84vh;--s:7vh;--dur:9.1s;--delay:-3s;--r0:-6deg;--r1:2deg;--dy:-6px;--i:4"><span class="cube__lift"><img src="brand/commodities/png/BURGER.png" alt=""></span><span class="cube__tag">BURGER Big Mac</span></a>
-  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:84vw;--y:50vh;--s:14vh;--dur:8.6s;--delay:-5.2s;--r0:3deg;--r1:-4deg;--dy:-10px;--i:5"><span class="cube__lift"><img src="brand/commodities/png/LAMBO.png" alt=""></span><span class="cube__tag">LAMBO Lamborghini</span></a>
-  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:89vw;--y:68vh;--s:12vh;--dur:7.2s;--delay:-2.8s;--r0:-2deg;--r1:5deg;--dy:-9px;--i:6"><span class="cube__lift"><img src="brand/commodities/png/CL.png" alt=""></span><span class="cube__tag">CL WTI Crude</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:75vw;--y:82vh;--s:8vh;--dur:9.4s;--delay:-1.9s;--r0:4deg;--r1:-3deg;--dy:-8px;--i:7"><span class="cube__lift"><img src="brand/commodities/png/PIZZA.png" alt=""></span><span class="cube__tag">PIZZA Large Pepperoni</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:95vw;--y:58vh;--s:7vh;--dur:6.6s;--delay:-3.7s;--r0:-5deg;--r1:2deg;--dy:-7px;--i:8"><span class="cube__lift"><img src="brand/commodities/png/SLV.png" alt=""></span><span class="cube__tag">SLV Silver</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:27vh;--s:6vh;--dur:9.6s;--delay:-0.9s;--r0:3deg;--r1:-5deg;--dy:-6px;--i:9"><span class="cube__lift"><img src="brand/commodities/png/DLORE.png" alt=""></span><span class="cube__tag">DLORE AWP Dragon Lore</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:3vw;--y:40vh;--s:6vh;--dur:8.1s;--delay:-4.9s;--r0:-3deg;--r1:4deg;--dy:-6px;--i:10"><span class="cube__lift"><img src="brand/commodities/png/PIKAEX238.png" alt=""></span><span class="cube__tag">PIKAEX238 Pikachu ex</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:70vh;--s:11vh;--dur:6.9s;--delay:-1.2s;--r0:5deg;--r1:-2deg;--dy:-9px;--i:2"><span class="cube__lift"><img src="brand/assets/cubes/GLD.webp" alt=""></span><span class="cube__tag">GLD Gold</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:19vw;--y:64vh;--s:8vh;--dur:8.8s;--delay:-6s;--r0:2deg;--r1:-5deg;--dy:-7px;--i:3"><span class="cube__lift"><img src="brand/assets/cubes/DAYTONA.webp" alt=""></span><span class="cube__tag">DAYTONA Rolex Daytona</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:13vw;--y:84vh;--s:7vh;--dur:9.1s;--delay:-3s;--r0:-6deg;--r1:2deg;--dy:-6px;--i:4"><span class="cube__lift"><img src="brand/assets/cubes/BURGER.webp" alt=""></span><span class="cube__tag">BURGER Big Mac</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:84vw;--y:50vh;--s:14vh;--dur:8.6s;--delay:-5.2s;--r0:3deg;--r1:-4deg;--dy:-10px;--i:5"><span class="cube__lift"><img src="brand/assets/cubes/LAMBO.webp" alt=""></span><span class="cube__tag">LAMBO Lamborghini</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:89vw;--y:68vh;--s:12vh;--dur:7.2s;--delay:-2.8s;--r0:-2deg;--r1:5deg;--dy:-9px;--i:6"><span class="cube__lift"><img src="brand/assets/cubes/CL.webp" alt=""></span><span class="cube__tag">CL WTI Crude</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:75vw;--y:82vh;--s:8vh;--dur:9.4s;--delay:-1.9s;--r0:4deg;--r1:-3deg;--dy:-8px;--i:7"><span class="cube__lift"><img src="brand/assets/cubes/PIZZA.webp" alt=""></span><span class="cube__tag">PIZZA Large Pepperoni</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:95vw;--y:58vh;--s:7vh;--dur:6.6s;--delay:-3.7s;--r0:-5deg;--r1:2deg;--dy:-7px;--i:8"><span class="cube__lift"><img src="brand/assets/cubes/SLV.webp" alt=""></span><span class="cube__tag">SLV Silver</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:27vh;--s:6vh;--dur:9.6s;--delay:-0.9s;--r0:3deg;--r1:-5deg;--dy:-6px;--i:9"><span class="cube__lift"><img src="brand/assets/cubes/DLORE.webp" alt=""></span><span class="cube__tag">DLORE AWP Dragon Lore</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:3vw;--y:40vh;--s:6vh;--dur:8.1s;--delay:-4.9s;--r0:-3deg;--r1:4deg;--dy:-6px;--i:10"><span class="cube__lift"><img src="brand/assets/cubes/PIKAEX238.webp" alt=""></span><span class="cube__tag">PIKAEX238 Pikachu ex</span></a>
 </div>
 
 <div class="hero" id="hero" aria-hidden="true"><div id="pg"></div></div>
