@@ -182,6 +182,7 @@ body::before {
   border-radius: 999px;
   padding: 3px 10px;
 }
+.delta.down { color: var(--beak); border-color: color-mix(in srgb, var(--beak) 42%, transparent); }
 .asof { font-size: 11px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* ---- gauge strip ------------------------------------------------------- */
@@ -386,20 +387,20 @@ footer p { max-width: 70ch; }
 
     <div>
       <h1 class="ticker">PENGUIN</h1>
-      <p class="thesis">One PENGUIN is worth <span class="qty">1.796 fluid ounces</span> of California water.</p>
+      <p class="thesis">One PENGUIN is worth <span class="qty" id="f-floz-hero">1.796 fluid ounces</span> of California water.</p>
       <div class="quote-row">
-        <span class="usd">$0.00001937</span>
-        <span class="delta">+272.59% 24h</span>
-        <span class="asof">18 Sep 2026</span>
+        <span class="usd" id="f-usd">$0.00001937</span>
+        <span class="delta" id="f-delta">+272.59% 24h</span>
+        <span class="asof" id="f-asof">18 Sep 2026</span>
       </div>
     </div>
   </div>
 
   <dl class="gauges">
-    <div class="gauge"><dt>Fully diluted</dt><dd>$19,375</dd></div>
-    <div class="gauge"><dt>Volume 24h</dt><dd>$74,296</dd></div>
-    <div class="gauge"><dt>Pool liquidity</dt><dd>$10,454</dd></div>
-    <div class="gauge"><dt>Holders</dt><dd>57</dd></div>
+    <div class="gauge"><dt>Fully diluted</dt><dd id="f-fdv">$19,375</dd></div>
+    <div class="gauge"><dt>Volume 24h</dt><dd id="f-vol">$74,296</dd></div>
+    <div class="gauge"><dt>Pool liquidity</dt><dd id="f-liq">$10,454</dd></div>
+    <div class="gauge"><dt>Holders</dt><dd id="f-holders">57</dd></div>
     <div class="gauge"><dt>Trading fee</dt><dd>2.00%</dd></div>
   </dl>
 
@@ -417,13 +418,13 @@ footer p { max-width: 70ch; }
       </div>
       <div class="step">
         <span class="n">Today's water price</span>
-        <span class="v">$450.00</span>
+        <span class="v" id="f-h2o">$450.00</span>
         <small>Per acre-foot, from the NQH2O index. This is the number the whole market is denominated against.</small>
       </div>
       <div class="step">
         <span class="n">One PENGUIN buys</span>
-        <span class="v accent">1.796 fl oz</span>
-        <small>0.0000000431 of an acre-foot. Roughly a shot glass of water rights, which is the joke and also literally true.</small>
+        <span class="v accent" id="f-floz">1.796 fl oz</span>
+        <small><span id="f-af">0.0000000431</span> of an acre-foot. Roughly a shot glass of water rights, which is the joke and also literally true.</small>
       </div>
     </div>
   </section>
@@ -444,7 +445,7 @@ footer p { max-width: 70ch; }
       </div>
       <div class="entry">
         <time datetime="2026-09-18">Since graduation</time>
-        <p><strong>1.2017 H2O</strong> paid out to holders — about $541 of California water, distributed automatically rather than claimed.</p>
+        <p><strong id="f-earn">1.2017 H2O</strong> paid out to holders — about <span id="f-earn-usd">$541</span> of California water, distributed automatically rather than claimed.</p>
       </div>
     </div>
   </section>
@@ -489,5 +490,76 @@ footer p { max-width: 70ch; }
   });
 </script>
 
+
+<script>
+/* The figures above are baked into the HTML so the page reads correctly on first paint and if this
+   never runs. This refreshes them from the ICE Market indexer, which serves the same numbers the
+   exchange itself renders. Public endpoint, no key.
+
+   The water line is derived rather than fetched: priceQuote is the price in H2O, H2O is an acre-foot,
+   and an acre-foot is 325,851 gallons. */
+(function () {
+  var MINT = "79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice";
+  var API = "https://icemarkets-indexer-prod.fly.dev";
+  var GAL_PER_ACRE_FOOT = 43560 * 7.48051948;
+  var OZ_PER_GAL = 128;
+
+  function set(id, text) {
+    var el = document.getElementById(id);
+    if (el && text != null) el.textContent = text;
+  }
+  var usd0 = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
+  var usd2 = function (n) { return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+  function price(n) {
+    // Sub-cent prices need enough places to mean anything; $0.00 would be worse than stale.
+    var places = n >= 1 ? 2 : n >= 0.01 ? 4 : 8;
+    return "$" + n.toFixed(places);
+  }
+
+  function get(path) {
+    return fetch(API + path, { cache: "no-store" }).then(function (r) {
+      if (!r.ok) throw new Error(path + " " + r.status);
+      return r.json();
+    });
+  }
+
+  Promise.all([get("/markets/" + MINT), get("/commodities/H2O")])
+    .then(function (res) {
+      var m = res[0], h2o = res[1];
+
+      set("f-usd", price(m.priceUsd));
+      set("f-fdv", usd0(m.fdvUsd));
+      set("f-vol", usd0(m.volume24hUsd));
+      set("f-liq", usd0(m.liquidityUsd));
+      set("f-holders", String(m.holders));
+
+      var d = document.getElementById("f-delta");
+      if (d && typeof m.change24h === "number") {
+        d.textContent = (m.change24h >= 0 ? "+" : "") + m.change24h.toFixed(2) + "% 24h";
+        d.classList.toggle("down", m.change24h < 0);
+      }
+
+      var floz = m.priceQuote * GAL_PER_ACRE_FOOT * OZ_PER_GAL;
+      set("f-floz-hero", floz.toFixed(3) + " fluid ounces");
+      set("f-floz", floz.toFixed(3) + " fl oz");
+      set("f-af", m.priceQuote.toFixed(10));
+
+      if (h2o && h2o.priceUsd) {
+        set("f-h2o", usd2(h2o.priceUsd));
+        if (typeof m.holderEarningsCoin === "number") {
+          set("f-earn", m.holderEarningsCoin.toFixed(4) + " H2O");
+          set("f-earn-usd", usd0(m.holderEarningsCoin * h2o.priceUsd));
+        }
+      }
+
+      set("f-asof", new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }));
+    })
+    .catch(function () {
+      /* Leave the baked figures and the date they were read. A stale number that is labelled is
+         better than an empty one. */
+    });
+})();
+</script>
 </body>
 </html>
