@@ -1,0 +1,683 @@
+/* ==========================================================================
+   ICE Market: ice as a material. The kit.
+   v0.2, 2026-09-13. Plain CSS, no build step. Drop into apps/web and scope
+   under .agentic-theme if needed; every value is a custom property.
+
+   Contents
+     1. tokens (light, dark, the instrument, motion, z-scale)
+     2. the button slab (six layers) and its variants, sizes, states
+     3. the trade CTA lifecycle: signing, sending (penguin on a slab),
+        filled (shatter), frozen (failure)
+     4. chips, pills, wells, inputs, select, check, radio, range, tabs, switch
+     5. surfaces: frost panel, deep-water instrument, the sheet
+     6. data: cube icon, fact line, ledger strip, sparkline, curve bar,
+        clock, tape, table row, skeleton thaw, empty state
+     7. toast, snowball cursor, the 2D penguin
+     8. reduced motion
+
+   The slab is built from six layers, top to bottom:
+     1. ::after   the crack burst on hover (three diagonal shards)
+     2. text      Geist 600, a hairline text shadow for separation on glass
+     3. ::before  frozen fractures and two trapped bubbles (static), and the
+                  light sweep while loading
+     4. background  wet highlight at the top, the body (deeper toward the
+                  bottom because thicker ice is bluer), a key-light glow
+                  at the upper left
+     5. box-shadow  rim light on the top edge, faint full rim, thickness at
+                  the bottom, a wet line under the slab, a cool cast shadow
+     6. ground    blue shadows only, never black
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* ground tokens, light (the current Agentic set) */
+  --ice-bg: #FBFDFF; --ice-bg2: #EEF7FC; --ice-bg3: #DFEDF6;
+  --ice-tx: #17364D; --ice-mu: #526F83; --ice-ic: #7597AD;
+  --ice-bd: #D7E8F2; --ice-bd2: #9FD6ED;
+  --ice-acc: #2188B8; --ice-acc2: #12648F;
+  --ice-link: #146F9F;
+  --ice-pos: #1B7A3E; --ice-posbg: #E0FAE0; --ice-neg: #C81E1E; --ice-negbg: #FFECEC;
+  --ice-warn: #855F00; --ice-warnbg: #FFF8D5;
+  --ice-gold: #F2C14E;
+  --ice-glacier: #7CD4F5;
+  /* the dark instrument (trade panel, tape, clock), same in both themes */
+  --inst: #E6F2F9; --inst2: #D8E9F3; --inst-tx: #17364D; --inst-mu: #526F83; --inst-bd: rgba(14, 74, 115, 0.16); --inst-on: #0B3552; --inst-well: #CBE1EE; --inst-shadow: rgba(14, 74, 115, 0.16); --inst-pos: #147350; --inst-neg: #B42318;
+  /* material constants */
+  --ice-rim: rgba(255, 255, 255, 0.7);
+  --ice-rim-full: rgba(255, 255, 255, 0.26);
+  --ice-thick: rgba(4, 26, 43, 0.9);
+  --ice-wet: rgba(255, 255, 255, 0.35);
+  --ice-cast: rgba(14, 74, 115, 0.6);
+  --ice-focus: rgba(124, 212, 245, 0.55);
+  --ice-shadow: rgba(46, 127, 184, 0.22);
+  --ice-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.96  0 0 0 0 1  0 0 0 0.8 0'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+  --ice-grain-soft: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.16 0'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+  /* motion */
+  --ice-ease: cubic-bezier(0.19, 1, 0.22, 1);
+  --ice-ease-morph: cubic-bezier(0.76, 0, 0.24, 1);
+  --ice-press: 120ms; --ice-hover: 200ms; --ice-enter: 300ms;
+  --ice-sheet: 260ms; --ice-crack: 620ms; --ice-shatter: 320ms; --ice-land: 220ms; --ice-sweep: 1.1s; --ice-tape: 42s;
+  /* z scale */
+  --ice-cursor-size: 34px;   /* the snowball. ice-motion.js reads this to keep the roll honest */
+  --ice-z-dropdown: 100; --ice-z-sticky: 200; --ice-z-sheet: 300; --ice-z-toast: 400; --ice-z-cursor: 500; --ice-z-tooltip: 600;
+  --font-ice-words: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-ice-nums: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+[data-theme="dark"] {
+  --ice-bg: #07111C; --ice-bg2: #0D1A28; --ice-bg3: #122335;
+  --ice-tx: #E9F1FA; --ice-mu: #8FA7BF; --ice-ic: #6F8AA8;
+  --ice-bd: rgba(190, 220, 240, 0.12); --ice-bd2: rgba(190, 220, 240, 0.30);
+  --ice-link: #6FD0F5;
+  --ice-pos: #3DE0A0; --ice-posbg: rgba(61, 224, 160, 0.14); --ice-neg: #FF7A8A; --ice-negbg: rgba(255, 122, 138, 0.14);
+  --ice-warn: #F2C14E; --ice-warnbg: rgba(242, 193, 78, 0.14);
+  --inst: #040C15; --inst2: #0A1624; --inst-tx: #E9F1FA; --inst-mu: #8FA7BF; --inst-bd: rgba(120, 200, 240, 0.22); --inst-on: #0B3552; --inst-well: #02080E; --inst-shadow: rgba(0, 0, 0, 0.6); --inst-pos: #3DE0A0; --inst-neg: #FF7A8A;
+  --ice-cast: rgba(0, 0, 0, 0.6);
+  --ice-wet: rgba(255, 255, 255, 0.1);
+  --ice-shadow: rgba(0, 0, 0, 0.5);
+  --ice-focus: rgba(124, 212, 245, 0.5);
+}
+
+/* small shared utilities */
+.ice-k { font: 400 10px / 1 var(--font-ice-nums); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ice-mu); }
+.ice-num { font-family: var(--font-ice-nums); font-variant-numeric: tabular-nums; }
+.ice-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* --------------------------------------------------------------------------
+   2. Button
+   -------------------------------------------------------------------------- */
+.ice-btn {
+  --ice-lit: #4DB6E3;
+  --ice-tint: #1C7DAD;
+  --ice-deep: #155F8E;
+  --ice-ink: #FFFFFF;
+  --ice-ink-shadow: rgba(0, 30, 60, 0.28);
+  --ice-glow: rgba(150, 232, 255, 0.42);     /* light coming through the bottom of the slab */
+  --ice-refract: rgba(190, 240, 255, 0.45);  /* the lower edge catches light */
+  --ice-inner: rgba(160, 230, 255, 0.22);    /* frosted inner glow along every edge */
+  --ice-h: 36px; --ice-px: 14px; --ice-fs: 13px; --ice-r: 10px; --ice-gap: 7px;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ice-gap);
+  height: var(--ice-h);
+  padding: 0 var(--ice-px);
+  border: 0;
+  border-radius: var(--ice-r);
+  font: 600 var(--ice-fs) / 1 var(--font-ice-words);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--ice-ink);
+  text-shadow: 0 1px 1px var(--ice-ink-shadow);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  text-decoration: none;
+  background:
+    radial-gradient(90% 80% at 50% 118%, var(--ice-glow), rgba(150, 232, 255, 0) 62%),
+    radial-gradient(70% 70% at 16% -12%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 60%),
+    linear-gradient(170deg, var(--ice-lit) 0%, var(--ice-tint) 48%, var(--ice-deep) 100%);
+  box-shadow:
+    inset 0 1px 0 var(--ice-rim),
+    inset 0 0 0 1px var(--ice-rim-full),
+    inset 0 -1px 0 var(--ice-refract),
+    inset 0 0 14px var(--ice-inner),
+    0 1px 0 var(--ice-wet),
+    0 10px 24px -14px var(--ice-cast);
+  transition:
+    transform var(--ice-press) ease,
+    box-shadow var(--ice-hover) ease,
+    filter var(--ice-hover) ease,
+    background-color var(--ice-hover) ease;
+}
+.ice-btn svg { width: 1em; height: 1em; flex-shrink: 0; }
+.ice-btn .ice-cube { --s: 1.15em; }
+
+/* frozen fractures and bubbles: what makes it ice rather than glass */
+.ice-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    var(--ice-grain-soft),
+    linear-gradient(112deg, transparent 34%, rgba(255, 255, 255, 0.16) 44%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(62deg, transparent 60%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0) 80%),
+    radial-gradient(circle at 62% 62%, rgba(255, 255, 255, 0.3) 0 1.2px, rgba(255, 255, 255, 0) 2.4px),
+    radial-gradient(circle at 34% 40%, rgba(255, 255, 255, 0.24) 0 0.9px, rgba(255, 255, 255, 0) 2px);
+  background-size: 120px 120px, auto, auto, auto, auto;
+  opacity: 0.9;
+  transition: opacity var(--ice-hover) ease;
+}
+
+/* the crack: kept from the current pages.css, retimed */
+.ice-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.94);
+  background:
+    linear-gradient(112deg, transparent 47%, #d8f7ff 48%, #ffffff 49%, transparent 50%) 16% 12% / 34% 54% no-repeat,
+    linear-gradient(68deg, transparent 47%, #bcecff 48%, #ffffff 49%, transparent 50%) 61% 2% / 30% 68% no-repeat,
+    linear-gradient(132deg, transparent 47%, #d8f7ff 48%, #ffffff 49%, transparent 50%) 86% 52% / 26% 45% no-repeat;
+}
+@keyframes ice-crack {
+  0% { transform: scale(0.94); opacity: 0; }
+  35% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.03); opacity: 0.18; }
+}
+@keyframes ice-sweep {
+  from { background-position: 200% 0; }
+  to { background-position: -100% 0; }
+}
+
+/* states */
+@media (hover: hover) and (pointer: fine) {
+  .ice-btn:hover:not(:disabled):not([aria-disabled="true"]):not(.is-busy),
+  .ice-btn.is-hover {
+    filter: brightness(1.06) saturate(1.04);
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.85),
+      inset 0 0 0 1px rgba(200, 240, 255, 0.6),
+      inset 0 -1px 0 var(--ice-refract),
+      inset 0 0 16px var(--ice-inner),
+      0 1px 0 var(--ice-wet),
+      0 14px 28px -14px var(--ice-cast),
+      0 0 18px rgba(124, 212, 245, 0.35);
+  }
+  .ice-btn:hover:not(:disabled):not([aria-disabled="true"]):not(.is-busy)::after,
+  .ice-btn.is-hover::after { animation: ice-crack var(--ice-crack) ease-out forwards; }
+}
+.ice-btn:active:not(:disabled):not([aria-disabled="true"]):not(.is-busy),
+.ice-btn.is-active {
+  transform: translateY(1px);
+  filter: brightness(0.97);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px var(--ice-rim-full),
+    inset 0 2px 8px rgba(4, 26, 43, 0.35),
+    0 0 0 var(--ice-wet),
+    0 4px 10px -8px var(--ice-cast);
+}
+.ice-btn:focus-visible,
+.ice-btn.is-focus {
+  outline: 0;
+  box-shadow:
+    inset 0 1px 0 var(--ice-rim),
+    inset 0 0 0 1px var(--ice-rim-full),
+    inset 0 -1px 0 var(--ice-refract),
+    inset 0 0 14px var(--ice-inner),
+    0 1px 0 var(--ice-wet),
+    0 10px 24px -14px var(--ice-cast),
+    0 0 0 3px var(--ice-focus);
+}
+/* frozen over: no light gets in */
+.ice-btn:disabled,
+.ice-btn[aria-disabled="true"],
+.ice-btn.is-disabled {
+  cursor: not-allowed;
+  transform: none;
+  filter: saturate(0.25) contrast(0.92);
+  opacity: 0.6;
+  text-shadow: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+.ice-btn:disabled::before,
+.ice-btn[aria-disabled="true"]::before,
+.ice-btn.is-disabled::before {
+  background: var(--ice-grain);
+  background-size: 120px 120px;
+  opacity: 0.35;
+}
+.ice-btn:disabled::after,
+.ice-btn[aria-disabled="true"]::after,
+.ice-btn.is-disabled::after { display: none; }
+/* loading: light travels through the ice */
+.ice-btn.is-loading { pointer-events: none; }
+.ice-btn.is-loading::before {
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  background-size: 250% 100%;
+  opacity: 1;
+  animation: ice-sweep var(--ice-sweep) linear infinite;
+}
+/* done: settles to the buy green for a beat (add the class for 1200ms) */
+.ice-btn.is-done { --ice-lit: #4FD9A0; --ice-tint: #1F9E6A; --ice-deep: #147350; --ice-glow: rgba(140, 255, 200, 0.4); }
+
+/* variants: four knobs each */
+.ice-btn--primary { /* the defaults above */ }
+.ice-btn--buy  { --ice-lit: #4FD9A0; --ice-tint: #1F9E6A; --ice-deep: #147350; --ice-glow: rgba(140, 255, 200, 0.4); --ice-cast: rgba(20, 112, 75, 0.55); }
+.ice-btn--sell { --ice-lit: #FF8A98; --ice-tint: #D63B4F; --ice-deep: #A22637; --ice-glow: rgba(255, 170, 180, 0.42); --ice-cast: rgba(156, 34, 51, 0.5); }
+.ice-btn--gold { --ice-lit: #FFE08A; --ice-tint: #F2C14E; --ice-deep: #C8961E; --ice-ink: #2A1E00; --ice-ink-shadow: rgba(255, 245, 210, 0.5); --ice-glow: rgba(255, 240, 180, 0.55); --ice-refract: rgba(255, 245, 200, 0.6); --ice-inner: rgba(255, 235, 170, 0.3); --ice-cast: rgba(185, 138, 22, 0.45); }
+/* clear: a frosted slab, real frost over whatever is behind it */
+.ice-btn--clear {
+  --ice-lit: rgba(255, 255, 255, 0.96); --ice-tint: rgba(236, 247, 253, 0.9); --ice-deep: rgba(214, 236, 248, 0.88);
+  --ice-ink: #0B3552; --ice-ink-shadow: rgba(255, 255, 255, 0.7);
+  --ice-glow: rgba(160, 230, 255, 0.5); --ice-refract: rgba(124, 212, 245, 0.5); --ice-inner: rgba(124, 212, 245, 0.18);
+  --ice-cast: rgba(33, 136, 184, 0.35); --ice-rim-full: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px) saturate(1.3); -webkit-backdrop-filter: blur(8px) saturate(1.3);
+}
+[data-theme="dark"] .ice-btn--clear { --ice-cast: rgba(0, 0, 0, 0.5); }
+/* on the dark instrument: glows from within, cyan rim */
+.ice-btn--deep {
+  --ice-lit: #256A93; --ice-tint: #17466A; --ice-deep: #0E2F4B;
+  --ice-ink: #E9F1FA; --ice-ink-shadow: rgba(0, 0, 0, 0.45);
+  --ice-rim: rgba(180, 230, 255, 0.5); --ice-rim-full: rgba(120, 200, 240, 0.35);
+  --ice-glow: rgba(124, 212, 245, 0.5); --ice-refract: rgba(124, 212, 245, 0.55); --ice-inner: rgba(124, 212, 245, 0.25);
+  --ice-cast: rgba(0, 0, 0, 0.6);
+}
+.inst .ice-btn, .ice-inst .ice-btn { --ice-wet: rgba(255, 255, 255, 0.08); }
+/* frost: nothing until you touch it */
+.ice-btn--frost {
+  --ice-ink: var(--ice-tx); --ice-ink-shadow: transparent;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--ice-bd);
+}
+.ice-btn--frost::before { opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .ice-btn--frost:hover:not(:disabled), .ice-btn--frost.is-hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.15)), var(--ice-bg2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 0 0 1px var(--ice-bd2), 0 6px 14px -10px var(--ice-cast);
+    filter: none;
+  }
+  .ice-btn--frost:hover::before, .ice-btn--frost.is-hover::before { opacity: 0.5; }
+}
+[data-theme="dark"] .ice-btn--frost:hover:not(:disabled), [data-theme="dark"] .ice-btn--frost.is-hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)), var(--ice-bg2);
+}
+
+/* sizes */
+.ice-btn--xs { --ice-h: 24px; --ice-px: 9px;  --ice-fs: 11px; --ice-r: 7px;  --ice-gap: 5px; }
+.ice-btn--sm { --ice-h: 28px; --ice-px: 11px; --ice-fs: 12px; --ice-r: 8px;  --ice-gap: 6px; }
+.ice-btn--md { --ice-h: 36px; --ice-px: 14px; --ice-fs: 13px; --ice-r: 10px; --ice-gap: 7px; }
+.ice-btn--lg { --ice-h: 44px; --ice-px: 20px; --ice-fs: 14px; --ice-r: 12px; --ice-gap: 8px; }
+.ice-btn--block { width: 100%; }
+.ice-btn--icon { padding: 0; width: var(--ice-h); }
+
+/* a label that swaps: the icon-swap recipe, opacity + blur + a little scale */
+.ice-btn__label { display: inline-flex; align-items: center; gap: inherit; }
+.ice-btn__label.is-in { animation: ice-swap-in 160ms var(--ice-ease) both; }
+@keyframes ice-swap-in { from { opacity: 0; filter: blur(4px); transform: scale(0.94); } to { opacity: 1; filter: blur(0); transform: scale(1); } }
+
+/* --------------------------------------------------------------------------
+   3. The trade CTA lifecycle
+      rest -> is-signing -> is-sending -> is-filled | is-frozen -> rest
+   -------------------------------------------------------------------------- */
+.ice-btn.is-busy { pointer-events: none; cursor: progress; }
+/* signing: the wallet has the transaction, light sweeps through the ice */
+.ice-btn.is-signing::before {
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  background-size: 250% 100%;
+  opacity: 1;
+  animation: ice-sweep var(--ice-sweep) linear infinite;
+}
+/* sending: the button becomes a clear slab and the penguin slides across it */
+.ice-btn.is-sending {
+  --ice-lit: #FFFFFF; --ice-tint: #E9F6FD; --ice-deep: #CDE8F6;
+  --ice-ink: #0B3552; --ice-ink-shadow: transparent;
+  --ice-glow: rgba(160, 230, 255, 0.6); --ice-refract: rgba(124, 212, 245, 0.6); --ice-inner: rgba(124, 212, 245, 0.2);
+  --ice-cast: rgba(33, 136, 184, 0.35); --ice-rim-full: rgba(255, 255, 255, 0.8);
+  padding: 0;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+.ice-btn.is-sending::after { display: none; }
+.ice-btn.is-sending .ice-slide { width: 100%; height: 100%; }
+/* filled: green-lit ice, the shards fly from the button (spawned by IceMotion.shatter) */
+.ice-btn.is-filled { --ice-lit: #4FD9A0; --ice-tint: #1F9E6A; --ice-deep: #147350; --ice-glow: rgba(140, 255, 200, 0.45); --ice-cast: rgba(20, 112, 75, 0.55); --ice-ink: #FFFFFF; --ice-ink-shadow: rgba(0, 40, 30, 0.3); }
+.ice-shards { position: fixed; inset: 0; z-index: calc(var(--ice-z-toast) - 1); pointer-events: none; overflow: hidden; }
+.ice-shard {
+  position: absolute; left: var(--x); top: var(--y); width: var(--w); height: var(--h);
+  pointer-events: none; z-index: 3;
+  background: linear-gradient(160deg, #FFFFFF, #D6EEFB 55%, #9FD6ED);
+  clip-path: var(--clip);
+  box-shadow: 0 2px 6px -2px rgba(14, 74, 115, 0.6);
+  animation: ice-shard var(--ice-shatter) var(--ice-ease) forwards;
+}
+@keyframes ice-shard {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; }
+}
+/* frozen: the failure. Frost grows over the slab, the label says what happened. */
+.ice-btn.is-frozen {
+  --ice-lit: #E8F0F5; --ice-tint: #D3E0E9; --ice-deep: #B7C8D4;
+  --ice-ink: #9C2233; --ice-ink-shadow: rgba(255, 255, 255, 0.6);
+  --ice-glow: rgba(255, 255, 255, 0.3); --ice-refract: rgba(255, 255, 255, 0.4); --ice-inner: rgba(255, 255, 255, 0.3);
+  --ice-cast: rgba(33, 90, 120, 0.3);
+  filter: saturate(0.6);
+  transition: filter 250ms ease, background-color 250ms ease;
+}
+.ice-btn.is-frozen::before {
+  background: var(--ice-grain);
+  background-size: 120px 120px;
+  animation: ice-freeze 300ms ease-out forwards;
+}
+.ice-btn.is-frozen::after { display: none; }
+@keyframes ice-freeze { from { opacity: 0; transform: scale(1.15); filter: blur(3px); } to { opacity: 0.45; transform: scale(1); filter: blur(0); } }
+
+/* the loader: a penguin sliding on an ice slab */
+.ice-slide { --h: 44px; position: relative; display: inline-block; flex-shrink: 0; height: var(--h); width: calc(var(--h) * 3.4); overflow: hidden; border-radius: 10px; vertical-align: middle; }
+.ice-slide .ice-slide__slab { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ice-slide__rider { position: absolute; left: 0; bottom: 5%; height: 82%; aspect-ratio: 2 / 1; animation: ice-slide 1.3s linear infinite; }
+.ice-slide .ice-slide__pg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ice-slide__puff { position: absolute; bottom: 6%; left: -4%; width: 16%; aspect-ratio: 1; border-radius: 50%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(46, 127, 184, 0.25); animation: ice-puff 1.3s linear infinite; }
+.ice-slide__puff:nth-child(3) { animation-delay: -0.42s; left: -10%; }
+.ice-slide__puff:nth-child(4) { animation-delay: -0.85s; left: 2%; }
+@keyframes ice-slide {
+  0% { transform: translateX(-100%) rotate(-4deg); }
+  10% { transform: translateX(-40%) rotate(0deg); }
+  90% { transform: translateX(260%) rotate(0deg); }
+  100% { transform: translateX(320%) rotate(3deg); }
+}
+@keyframes ice-puff {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translate(-150%, -40%) scale(1.5); opacity: 0; }
+}
+.ice-slide--lg { --h: 96px; }
+
+/* --------------------------------------------------------------------------
+   4. Chips, pills, wells, inputs, tabs, switch, check, radio, range
+   -------------------------------------------------------------------------- */
+.ice-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 24px; padding: 0 9px; border-radius: 7px;
+  font: 500 11.5px / 1 var(--font-ice-words); color: var(--ice-mu); white-space: nowrap;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.1)), var(--ice-bg2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 0 0 1px var(--ice-bd);
+  transition: box-shadow var(--ice-hover) ease, color var(--ice-hover) ease;
+}
+.ice-chip .ice-cube { --s: 14px; }
+.ice-chip--on { color: var(--ice-tx); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 0 0 1px var(--ice-bd2); }
+.ice-chip--mono { font-family: var(--font-ice-nums); font-weight: 400; }
+.ice-chip--grad { color: var(--ice-pos); background: var(--ice-posbg); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 0 0 1px rgba(27, 122, 62, 0.2); }
+button.ice-chip { cursor: pointer; border: 0; }
+@media (hover: hover) { button.ice-chip:hover { color: var(--ice-tx); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px var(--ice-bd2); } }
+[data-theme="dark"] .ice-chip { background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)), var(--ice-bg2); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px var(--ice-bd); }
+.inst .ice-chip, .ice-inst .ice-chip { background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)), var(--inst2); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px var(--inst-bd); color: var(--inst-mu); }
+.inst .ice-chip--on, .ice-inst .ice-chip--on { color: var(--inst-tx); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px rgba(120, 200, 240, 0.5); }
+
+.ice-pill { display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 5px; font: 400 10.5px / 1 var(--font-ice-nums); font-variant-numeric: tabular-nums; white-space: nowrap; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+.ice-pill--pos { color: var(--ice-pos); background: var(--ice-posbg); }
+.ice-pill--neg { color: var(--ice-neg); background: var(--ice-negbg); }
+.ice-pill--mu { color: var(--ice-mu); background: var(--ice-bg3); }
+
+/* a recess cut into the ice: inputs, troughs */
+.ice-well {
+  display: flex; align-items: center; gap: 8px;
+  min-height: 36px; padding: 0 12px; border-radius: 10px;
+  font: 400 13px / 1 var(--font-ice-words); color: var(--ice-tx);
+  background: linear-gradient(180deg, var(--ice-bg3), var(--ice-bg) 70%);
+  box-shadow: inset 0 2px 4px rgba(20, 90, 140, 0.16), inset 0 0 0 1px var(--ice-bd), 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: box-shadow var(--ice-hover) ease;
+}
+.ice-well input, .ice-well select, .ice-well textarea { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; color: inherit; outline: 0; }
+.ice-well input::placeholder { color: var(--ice-mu); }
+.ice-well:focus-within { box-shadow: inset 0 2px 4px rgba(20, 90, 140, 0.16), inset 0 0 0 1px var(--ice-bd2), 0 0 0 3px var(--ice-focus); }
+.ice-well.is-error { box-shadow: inset 0 2px 4px rgba(20, 90, 140, 0.16), inset 0 0 0 1px rgba(200, 30, 30, 0.6); }
+.ice-well--num input { font: 500 22px / 1 var(--font-ice-nums); font-variant-numeric: tabular-nums; }
+.ice-well .unit { font: 400 11px / 1 var(--font-ice-nums); color: var(--ice-mu); }
+.ice-well kbd { margin-left: auto; font: 400 10px / 1 var(--font-ice-nums); color: var(--ice-mu); border: 1px solid var(--ice-bd); border-radius: 4px; padding: 3px 5px; background: var(--ice-bg); }
+.ice-well .ice-icon { color: var(--ice-ic); width: 14px; height: 14px; flex-shrink: 0; }
+[data-theme="dark"] .ice-well { background: linear-gradient(180deg, #03090F, var(--ice-bg2) 70%); box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6), inset 0 0 0 1px var(--ice-bd), 0 1px 0 rgba(255, 255, 255, 0.05); }
+.inst .ice-well, .ice-inst .ice-well { background: linear-gradient(180deg, var(--inst-well), var(--inst2) 70%); box-shadow: inset 0 2px 6px var(--inst-shadow), inset 0 0 0 1px var(--inst-bd); color: var(--inst-tx); }
+.inst .ice-well input::placeholder, .inst .ice-well .unit, .ice-inst .ice-well input::placeholder, .ice-inst .ice-well .unit { color: var(--inst-mu); }
+.ice-help { font: 400 11.5px / 1.4 var(--font-ice-words); color: var(--ice-mu); }
+.ice-help.is-error { color: var(--ice-neg); }
+.ice-label { display: block; font: 500 12px / 1.3 var(--font-ice-words); color: var(--ice-tx); margin-bottom: 6px; }
+
+/* select: the well with a chevron cut into it */
+.ice-select { position: relative; }
+.ice-select select { appearance: none; -webkit-appearance: none; padding-right: 22px; cursor: pointer; }
+.ice-select::after { content: ""; position: absolute; right: 12px; top: 50%; width: 7px; height: 7px; border-right: 1.5px solid var(--ice-ic); border-bottom: 1.5px solid var(--ice-ic); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+
+/* check and radio: a small clear-ice tile that fills with glacier */
+.ice-check, .ice-radio { display: inline-flex; align-items: center; gap: 8px; font: 400 13px / 1.3 var(--font-ice-words); color: var(--ice-tx); cursor: pointer; }
+.ice-check input, .ice-radio input { appearance: none; -webkit-appearance: none; margin: 0; width: 16px; height: 16px; flex-shrink: 0; border-radius: 5px; cursor: pointer;
+  background: linear-gradient(180deg, #ffffff, var(--ice-bg3)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px var(--ice-bd2), 0 1px 2px rgba(20, 90, 140, 0.2);
+  transition: box-shadow var(--ice-hover) ease, background-color var(--ice-hover) ease; position: relative; }
+.ice-radio input { border-radius: 50%; }
+.ice-check input:checked, .ice-radio input:checked { background: linear-gradient(168deg, #4FB3E0, #2188B8 60%, #12648F); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -3px 6px -4px rgba(4, 26, 43, 0.8); }
+.ice-check input::after { content: ""; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(45deg) scale(0); transition: transform 150ms var(--ice-ease); }
+.ice-check input:checked::after { transform: rotate(45deg) scale(1); }
+.ice-radio input::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: #fff; transform: scale(0); transition: transform 150ms var(--ice-ease); }
+.ice-radio input:checked::after { transform: scale(1); }
+.ice-check input:focus-visible, .ice-radio input:focus-visible { outline: 0; box-shadow: inset 0 0 0 1px var(--ice-bd2), 0 0 0 3px var(--ice-focus); }
+
+/* range: the curve. A trough with a glacier fill and an ice knob. */
+.ice-range { appearance: none; -webkit-appearance: none; width: 100%; height: 22px; background: transparent; margin: 0; cursor: pointer; }
+.ice-range::-webkit-slider-runnable-track { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #4FB3E0, #2188B8 var(--p, 50%), var(--ice-bg3) var(--p, 50%)); box-shadow: inset 0 1px 2px rgba(20, 90, 140, 0.25), inset 0 0 0 1px var(--ice-bd); }
+.ice-range::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; margin-top: -5px; border-radius: 50%; background: linear-gradient(180deg, #ffffff, #DDEFF9); box-shadow: inset 0 1px 0 #fff, 0 1px 3px rgba(20, 90, 140, 0.45), 0 0 0 1px var(--ice-bd2); }
+.ice-range::-moz-range-track { height: 8px; border-radius: 4px; background: var(--ice-bg3); box-shadow: inset 0 1px 2px rgba(20, 90, 140, 0.25), inset 0 0 0 1px var(--ice-bd); }
+.ice-range::-moz-range-progress { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #4FB3E0, #2188B8); }
+.ice-range::-moz-range-thumb { width: 18px; height: 18px; border: 0; border-radius: 50%; background: linear-gradient(180deg, #ffffff, #DDEFF9); box-shadow: inset 0 1px 0 #fff, 0 1px 3px rgba(20, 90, 140, 0.45), 0 0 0 1px var(--ice-bd2); }
+.ice-range:focus-visible { outline: 0; }
+.ice-range:focus-visible::-webkit-slider-thumb { box-shadow: inset 0 1px 0 #fff, 0 0 0 3px var(--ice-focus); }
+
+/* tabs: a trough with one clear-ice slab that slides */
+.ice-tabs { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--ice-bg2); box-shadow: inset 0 1px 2px rgba(20, 90, 140, 0.12), inset 0 0 0 1px var(--ice-bd); }
+.ice-tab { height: 28px; padding: 0 11px; border-radius: 8px; border: 0; background: transparent; font: 500 12px / 1 var(--font-ice-words); color: var(--ice-mu); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: color var(--ice-hover) ease, background var(--ice-hover) ease, box-shadow var(--ice-hover) ease; }
+.ice-tab:hover { color: var(--ice-tx); }
+.ice-tab[aria-selected="true"], .ice-tab.is-on { color: var(--ice-tx); background: linear-gradient(180deg, #ffffff, var(--ice-bg) 80%); box-shadow: inset 0 1px 0 #ffffff, inset 0 0 0 1px var(--ice-bd), 0 2px 4px -2px rgba(20, 90, 140, 0.35); }
+.ice-tab:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--ice-focus); }
+.ice-tabs--block { display: flex; } .ice-tabs--block .ice-tab { flex: 1; justify-content: center; }
+[data-theme="dark"] .ice-tabs { box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), inset 0 0 0 1px var(--ice-bd); }
+[data-theme="dark"] .ice-tab[aria-selected="true"], [data-theme="dark"] .ice-tab.is-on { background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)), var(--ice-bg3); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px var(--ice-bd2); }
+.inst .ice-tabs, .ice-inst .ice-tabs { background: var(--inst2); box-shadow: inset 0 1px 3px var(--inst-shadow), inset 0 0 0 1px var(--inst-bd); }
+.inst .ice-tab, .ice-inst .ice-tab { color: var(--inst-mu); }
+.inst .ice-tab:hover, .ice-inst .ice-tab:hover { color: var(--inst-tx); }
+.inst .ice-tab[aria-selected="true"], .inst .ice-tab.is-on, .ice-inst .ice-tab[aria-selected="true"], .ice-inst .ice-tab.is-on { color: var(--inst-on); background: linear-gradient(180deg, #ffffff, #DDEFF9); box-shadow: inset 0 1px 0 #ffffff, 0 2px 6px -2px rgba(0, 0, 0, 0.6); }
+
+/* switch: an ice knob in a trough */
+.ice-switch { position: relative; width: 40px; height: 22px; border-radius: 11px; border: 0; cursor: pointer; background: var(--ice-bg3); box-shadow: inset 0 1px 3px rgba(20, 90, 140, 0.25), inset 0 0 0 1px var(--ice-bd); transition: background var(--ice-hover) ease; padding: 0; flex-shrink: 0; }
+.ice-switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(180deg, #ffffff, #DDEFF9); box-shadow: inset 0 1px 0 #ffffff, 0 1px 2px rgba(20, 90, 140, 0.4); transition: transform var(--ice-enter) var(--ice-ease); }
+.ice-switch[aria-checked="true"] { background: linear-gradient(168deg, #4FB3E0, #2188B8 60%, #12648F); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -4px 8px -6px rgba(4, 26, 43, 0.8); }
+.ice-switch[aria-checked="true"]::after { transform: translateX(18px); }
+.ice-switch:focus-visible { outline: 0; box-shadow: inset 0 0 0 1px var(--ice-bd), 0 0 0 3px var(--ice-focus); }
+
+/* --------------------------------------------------------------------------
+   5. Surfaces: frost panel, deep-water instrument, the sheet
+   -------------------------------------------------------------------------- */
+.ice-panel { position: relative; border-radius: 14px; background: var(--ice-bg); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 0 0 1px var(--ice-bd), 0 10px 24px -20px var(--ice-cast); color: var(--ice-tx); }
+[data-theme="dark"] .ice-panel { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), inset 0 0 0 1px var(--ice-bd); }
+.ice-inst, .inst { position: relative; overflow: hidden; border-radius: 14px; background: var(--inst); color: var(--inst-tx); box-shadow: inset 0 0 0 1px var(--inst-bd), inset 0 1px 0 rgba(255, 255, 255, 0.06); }
+.ice-inst .ice-k, .inst .ice-k { color: var(--inst-mu); }
+.ice-inst .ice-help, .inst .ice-help { color: var(--inst-mu); }
+.ice-inst hr, .inst hr { border: 0; border-top: 1px solid var(--inst-bd); margin: 12px 0; }
+
+/* the sheet: slides up inside the instrument, never a centred modal */
+.ice-sheet { position: absolute; inset: 0; z-index: var(--ice-z-sheet); display: flex; flex-direction: column; padding: 18px; background: var(--inst); color: var(--inst-tx); transform: translateY(102%); transition: transform var(--ice-sheet) var(--ice-ease); box-shadow: inset 0 1px 0 rgba(180, 230, 255, 0.25); visibility: hidden; }
+.ice-sheet.is-open { transform: translateY(0); visibility: visible; }
+.ice-sheet.is-closing { transform: translateY(8%); opacity: 0; transition: transform 180ms ease, opacity 180ms ease, visibility 0s 180ms; visibility: hidden; }
+.ice-sheet__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.ice-sheet__title { font: 600 15px / 1.2 var(--font-ice-words); }
+.ice-sheet__close { width: 28px; height: 28px; border-radius: 8px; border: 0; background: var(--inst2); color: var(--inst-mu); cursor: pointer; display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--inst-bd); }
+.ice-sheet__close:hover { color: var(--inst-tx); }
+.ice-sheet__close:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--ice-focus); }
+.ice-sheet__rows { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.ice-sheet__rows > div { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.ice-sheet__rows dt { font: 400 12px / 1.3 var(--font-ice-words); color: var(--inst-mu); }
+.ice-sheet__rows dd { margin: 0; font: 500 12.5px / 1.3 var(--font-ice-nums); font-variant-numeric: tabular-nums; text-align: right; }
+.ice-sheet__big { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 2px 0 6px; }
+.ice-sheet__big strong { font: 600 22px / 1 var(--font-ice-nums); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.ice-sheet__big strong span { font: 400 11px / 1 var(--font-ice-nums); color: var(--inst-mu); margin-left: 5px; }
+.ice-sheet__note { margin: 10px 0 0; font: 400 12px / 1.45 var(--font-ice-words); color: var(--inst-mu); }
+.ice-sheet__note strong { color: var(--inst-tx); font-weight: 500; }
+.ice-sheet__cta { margin-top: auto; padding-top: 14px; }
+
+/* --------------------------------------------------------------------------
+   6. Data
+   -------------------------------------------------------------------------- */
+/* the cube icon, CSS fallback for the rendered sprites */
+.ice-cube { --s: 18px; --c: #7CD4F5; position: relative; display: inline-block; width: var(--s); height: var(--s); flex-shrink: 0; vertical-align: middle; background: radial-gradient(circle at 50% 58%, var(--c) 0 20%, transparent 24%); }
+.ice-cube::before { content: ""; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.92); clip-path: polygon(50% 4%, 94% 28%, 50% 52%, 6% 28%); }
+.ice-cube::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #C9E7F6 50%, #93CBE8 50%); clip-path: polygon(6% 28%, 50% 52%, 94% 28%, 94% 74%, 50% 98%, 6% 74%); opacity: 0.9; }
+[data-theme="dark"] .ice-cube::before, .inst .ice-cube::before, .ice-inst .ice-cube::before { background: rgba(220, 240, 255, 0.85); }
+[data-theme="dark"] .ice-cube::after, .inst .ice-cube::after, .ice-inst .ice-cube::after { background: linear-gradient(90deg, #6FB4DA 50%, #3E85B0 50%); }
+/* the rendered sprite: a commodity sealed in ice, from brand/assets/cubes */
+.ice-cube--img { background: none; object-fit: contain; width: var(--s); height: var(--s); filter: drop-shadow(0 2px 3px rgba(14, 74, 115, 0.25)); }
+.ice-cube--img::before, .ice-cube--img::after { display: none; }
+.ice-cube--empty { background: none; }
+.ice-cube--empty > i { position: absolute; inset: 0; display: grid; place-items: center; font: 600 calc(var(--s) * 0.34) / 1 var(--font-ice-nums); color: #0B3552; font-style: normal; z-index: 1; padding-top: 12%; }
+/* a light sweep across a cube on row hover */
+@keyframes ice-cube-glint { from { transform: translateX(-120%) skewX(-20deg); } to { transform: translateX(220%) skewX(-20deg); } }
+
+/* fact line: labels over values, one row of mono */
+.ice-fact { display: flex; flex-wrap: wrap; gap: 4px 22px; margin: 0; }
+.ice-fact > div { display: flex; flex-direction: column; gap: 4px; }
+.ice-fact dt { font: 400 10px / 1 var(--font-ice-nums); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ice-mu); }
+.ice-fact dd { margin: 0; font: 500 13px / 1.2 var(--font-ice-nums); font-variant-numeric: tabular-nums; color: var(--ice-tx); }
+.ice-fact dd small { font-size: 11px; font-weight: 400; color: var(--ice-mu); }
+.ice-inst .ice-fact dd, .inst .ice-fact dd { color: var(--inst-tx); } .ice-inst .ice-fact dt, .inst .ice-fact dt, .ice-inst .ice-fact dd small, .inst .ice-fact dd small { color: var(--inst-mu); }
+
+/* the facts line for the home page: one line of mono text */
+.ice-facts { font: 400 12.5px / 1.5 var(--font-ice-nums); color: var(--ice-mu); font-variant-numeric: tabular-nums; }
+.ice-facts b { color: var(--ice-tx); font-weight: 500; }
+.ice-facts .dot { margin: 0 8px; color: var(--ice-ic); }
+
+/* ledger strip: four cells, hairlines between, a sparkline and a note each */
+.ice-ledger { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-radius: 12px; background: var(--ice-bg); box-shadow: inset 0 0 0 1px var(--ice-bd); overflow: hidden; }
+.ice-ledger > div { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; box-shadow: -1px 0 0 var(--ice-bd); }
+.ice-ledger > div:first-child { box-shadow: none; }
+.ice-ledger strong { font: 500 16px / 1 var(--font-ice-nums); font-variant-numeric: tabular-nums; color: var(--ice-tx); }
+.ice-ledger small { font: 400 11px / 1.3 var(--font-ice-words); color: var(--ice-mu); }
+
+/* sparkline */
+.ice-spark { display: inline-block; vertical-align: middle; width: 72px; height: 22px; color: var(--ice-mu); }
+.ice-spark--pos { color: var(--ice-pos); } .ice-spark--neg { color: var(--ice-neg); }
+.ice-spark path.a { fill: currentColor; opacity: 0.12; } .ice-spark path.l { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.ice-spark circle { fill: currentColor; }
+
+/* curve bar: a trough with an ice fill; at 100% it shatters into the chip */
+.ice-curve { --p: 0; position: relative; display: inline-flex; align-items: center; gap: 8px; }
+.ice-curve__bar { position: relative; width: 84px; height: 8px; border-radius: 4px; background: var(--ice-bg3); box-shadow: inset 0 1px 2px rgba(20, 90, 140, 0.25), inset 0 0 0 1px var(--ice-bd); overflow: hidden; }
+.ice-curve__fill { position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p)); background: linear-gradient(90deg, #4FB3E0, #2188B8); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5); transition: transform 360ms var(--ice-ease); }
+.ice-curve__pct { font: 400 11px / 1 var(--font-ice-nums); font-variant-numeric: tabular-nums; color: var(--ice-mu); min-width: 3.2ch; }
+.ice-curve.is-grad .ice-curve__bar, .ice-curve.is-grad .ice-curve__pct { display: none; }
+.ice-curve .ice-chip--grad { display: none; }
+.ice-curve.is-grad .ice-chip--grad { display: inline-flex; animation: ice-swap-in 220ms var(--ice-ease) both; }
+
+/* the clock: on every screen */
+.ice-clock { display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 10px 0 8px; border-radius: 8px; background: var(--inst); color: var(--inst-tx); box-shadow: inset 0 0 0 1px var(--inst-bd), inset 0 1px 0 rgba(255, 255, 255, 0.06); font: 400 12px / 1 var(--font-ice-words); white-space: nowrap; }
+.ice-clock .ice-cube { --s: 14px; }
+.ice-clock b { font: 500 12.5px / 1 var(--font-ice-nums); font-variant-numeric: tabular-nums; }
+.ice-clock i { width: 6px; height: 6px; border-radius: 50%; background: var(--ice-glacier); box-shadow: 0 0 6px rgba(124, 212, 245, 0.8); }
+.ice-clock span { color: var(--inst-mu); }
+.ice-clock.is-landing { animation: ice-flash 700ms ease-out; }
+@keyframes ice-flash { 0% { box-shadow: inset 0 0 0 1px var(--inst-bd), 0 0 0 0 rgba(124, 212, 245, 0); } 30% { box-shadow: inset 0 0 0 1px rgba(124, 212, 245, 0.8), 0 0 0 6px rgba(124, 212, 245, 0.3), 0 0 18px rgba(124, 212, 245, 0.5); } 100% { box-shadow: inset 0 0 0 1px var(--inst-bd), 0 0 0 0 rgba(124, 212, 245, 0); } }
+
+/* the tape: a marquee of trades, payouts and commodity prices */
+.ice-tape { position: relative; height: 28px; overflow: hidden; background: var(--inst); color: var(--inst-tx); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 var(--inst-bd); font: 400 11.5px / 28px var(--font-ice-nums); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ice-tape__track { display: inline-flex; gap: 0; will-change: transform; animation: ice-tape var(--ice-tape) linear infinite; }
+.ice-tape:hover .ice-tape__track { animation-play-state: paused; }
+.ice-tape__item { display: inline-flex; align-items: center; gap: 7px; padding: 0 18px; }
+.ice-tape__item .ice-cube { --s: 12px; }
+.ice-tape__item b { font-weight: 500; }
+.ice-tape__item .mu { color: var(--inst-mu); }
+.ice-tape__item .pos { color: var(--inst-pos); } .ice-tape__item .neg { color: var(--inst-neg); }
+.ice-tape__item + .ice-tape__item::before { content: ""; width: 1px; height: 12px; background: var(--inst-bd); margin-right: 18px; }
+@keyframes ice-tape { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* table row anatomy */
+.ice-table { width: 100%; border-collapse: separate; border-spacing: 0; font: 400 12.5px / 1.3 var(--font-ice-words); color: var(--ice-tx); }
+.ice-table th { text-align: left; padding: 8px 10px; font: 400 10px / 1 var(--font-ice-nums); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ice-mu); border-bottom: 1px solid var(--ice-bd); }
+.ice-table th.n, .ice-table td.n { text-align: right; }
+.ice-table td { padding: 9px 10px; border-bottom: 1px solid var(--ice-bd); vertical-align: middle; font-variant-numeric: tabular-nums; }
+.ice-table td.n, .ice-table td.mono { font-family: var(--font-ice-nums); }
+.ice-table tr.ice-row { transition: background-color var(--ice-hover) ease; }
+.ice-table tr.ice-row td { transition: transform var(--ice-hover) var(--ice-ease); }
+.ice-table tr.ice-row .ice-row__buy { opacity: 0; transition: opacity var(--ice-hover) ease; }
+@media (hover: hover) {
+  .ice-table tr.ice-row:hover { background: var(--ice-bg2); }
+  .ice-table tr.ice-row:hover td { transform: translateY(-1px); }
+  .ice-table tr.ice-row:hover .ice-row__buy { opacity: 1; }
+  .ice-table tr.ice-row:hover .ice-cube { overflow: hidden; }
+}
+.ice-table tr.ice-row:focus-within .ice-row__buy { opacity: 1; }
+.ice-table .ice-row__name { display: flex; align-items: center; gap: 10px; }
+.ice-table .ice-row__name b { display: block; font-weight: 600; font-size: 13px; }
+.ice-table .ice-row__name small { display: block; font: 400 11px / 1.2 var(--font-ice-nums); color: var(--ice-mu); margin-top: 2px; }
+.ice-avatar { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--ice-bg3); box-shadow: inset 0 0 0 1px var(--ice-bd); }
+
+/* skeleton: frost that thaws, never a spinner */
+.ice-skel { position: relative; display: block; height: 12px; border-radius: 6px; overflow: hidden; background: var(--ice-bg3); }
+.ice-skel::before { content: ""; position: absolute; inset: 0; background: var(--ice-grain); background-size: 120px 120px; opacity: 0.5; }
+.ice-skel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.85) 50%, transparent 70%); background-size: 250% 100%; animation: ice-sweep 1.4s linear infinite; }
+[data-theme="dark"] .ice-skel::after, .inst .ice-skel::after, .ice-inst .ice-skel::after { background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.14) 50%, transparent 70%); background-size: 250% 100%; }
+
+/* empty state: the penguin, a sentence, one action */
+.ice-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 28px 20px; }
+.ice-empty .ice-penguin { width: 84px; height: auto; }
+.ice-empty h3 { margin: 4px 0 0; font: 600 15px / 1.3 var(--font-ice-words); color: var(--ice-tx); }
+.ice-empty p { margin: 0; max-width: 40ch; font: 400 13px / 1.5 var(--font-ice-words); color: var(--ice-mu); }
+
+/* --------------------------------------------------------------------------
+   7. Toast, snowball cursor, the 2D penguin
+   -------------------------------------------------------------------------- */
+.ice-toasts { position: fixed; right: 18px; bottom: 18px; z-index: var(--ice-z-toast); display: flex; flex-direction: column; gap: 8px; align-items: flex-end; pointer-events: none; }
+.ice-toast { pointer-events: auto; display: flex; align-items: flex-start; gap: 12px; width: min(360px, calc(100vw - 36px)); padding: 12px 14px; border-radius: 12px; background: var(--inst); color: var(--inst-tx); box-shadow: inset 0 0 0 1px var(--inst-bd), inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px -24px rgba(4, 26, 43, 0.8); animation: ice-land var(--ice-land) var(--ice-ease) both; cursor: default; }
+.ice-toast.is-out { animation: ice-leave 160ms ease both; }
+.ice-toast__cube { flex-shrink: 0; animation: ice-drop 320ms var(--ice-ease) both; animation-delay: 80ms; }
+.ice-toast__cube .ice-cube { --s: 26px; }
+.ice-toast__body { flex: 1; min-width: 0; }
+.ice-toast__title { font: 600 13.5px / 1.3 var(--font-ice-words); }
+.ice-toast__text { margin-top: 3px; font: 400 12.5px / 1.45 var(--font-ice-words); color: var(--inst-mu); }
+.ice-toast__text b { color: var(--inst-tx); font-weight: 500; font-family: var(--font-ice-nums); font-variant-numeric: tabular-nums; }
+.ice-toast__pg { flex-shrink: 0; width: 34px; height: auto; align-self: flex-end; }
+.ice-toast--fail .ice-toast__title { color: #FF7A8A; }
+@keyframes ice-land { from { opacity: 0; transform: translateY(12px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+@keyframes ice-leave { from { opacity: 1; transform: translateY(0); filter: blur(0); } to { opacity: 0; transform: translateY(6px); filter: blur(3px); } }
+@keyframes ice-drop { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* the snowball cursor: only while a transaction is pending */
+body.ice-cursor-on, body.ice-cursor-on * { cursor: none !important; }
+.ice-cursor { --r: 0deg; --d: var(--ice-cursor-size, 34px); position: fixed; left: 0; top: 0; z-index: var(--ice-z-cursor); width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2); border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 36% 30%, #FFFFFF 0 18%, #EEF8FF 45%, #C9E7F6 100%);
+  box-shadow: inset -3px -4px 7px rgba(46, 127, 184, 0.35), inset 2px 2px 3px rgba(255, 255, 255, 0.9), 0 5px 11px -4px rgba(14, 74, 115, 0.55);
+  transform: rotate(var(--r)); will-change: transform; }
+.ice-cursor::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 30% 62%, rgba(120, 170, 200, 0.7) 0 6.4%, transparent 9%), radial-gradient(circle at 66% 40%, rgba(120, 170, 200, 0.6) 0 5%, transparent 8%), radial-gradient(circle at 58% 72%, rgba(120, 170, 200, 0.5) 0 4.5%, transparent 7.2%); }
+.ice-cursor.is-melting { animation: ice-melt 240ms ease-in forwards; }
+.ice-cursor.is-cracking { animation: ice-cursor-crack 300ms ease-in forwards; }
+@keyframes ice-melt { 0% { transform: rotate(var(--r)) scale(1); opacity: 1; } 60% { transform: rotate(var(--r)) scale(0.55) translateY(4px); opacity: 0.9; } 100% { transform: rotate(var(--r)) scale(0.15) translateY(12px); opacity: 0; } }
+@keyframes ice-cursor-crack { 0% { transform: rotate(var(--r)) scale(1); } 30% { transform: rotate(calc(var(--r) + 12deg)) scale(1.12); filter: brightness(1.1); } 100% { transform: rotate(calc(var(--r) + 60deg)) translateY(18px) scale(0.6); opacity: 0; } }
+.ice-cursor__trail { --d: calc(var(--ice-cursor-size, 34px) * 0.27); position: fixed; left: 0; top: 0; z-index: calc(var(--ice-z-cursor) - 1); width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2); border-radius: 50%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 0 0 1px rgba(124, 212, 245, 0.35), 0 1px 2px rgba(46, 127, 184, 0.25); pointer-events: none; animation: ice-trail 520ms ease-out forwards; }
+@keyframes ice-trail { from { opacity: 0.7; transform: scale(1); } to { opacity: 0; transform: scale(0.3); } }
+
+/* the 2D penguin: navy and white, gold aviators. Parts move by class. */
+.ice-penguin { display: inline-block; vertical-align: middle; overflow: visible; }
+.ice-penguin .pg-lid { transform: translateY(-11px); transition: transform 90ms ease-in; }
+.ice-penguin.is-blink .pg-lid, .ice-penguin .pg-eye:hover .pg-lid { transform: translateY(0); }
+.ice-penguin .pg-shades { transform-origin: 50px 37px; transition: transform 260ms var(--ice-ease); }
+.ice-penguin.is-peek .pg-shades, .is-peek .ice-penguin .pg-shades { transform: translateY(9px) rotate(5deg); }
+.ice-penguin .pg-flip { transition: transform 160ms var(--ice-ease); }
+.ice-penguin .pg-flip--l { transform-origin: 20px 52px; } .ice-penguin .pg-flip--r { transform-origin: 80px 52px; }
+.ice-penguin.is-flap .pg-flip--l { animation: ice-flap-l 520ms var(--ice-ease) both; }
+.ice-penguin.is-flap .pg-flip--r { animation: ice-flap-r 520ms var(--ice-ease) both; }
+@keyframes ice-flap-l { 0% { transform: rotate(0); } 35% { transform: rotate(48deg); } 70% { transform: rotate(-6deg); } 100% { transform: rotate(0); } }
+@keyframes ice-flap-r { 0% { transform: rotate(0); } 35% { transform: rotate(-48deg); } 70% { transform: rotate(6deg); } 100% { transform: rotate(0); } }
+/* the idle blink: once every few seconds, only where the penguin is the only thing moving */
+.ice-penguin.is-idle .pg-lid { animation: ice-blink 5.2s linear infinite; }
+@keyframes ice-blink { 0%, 93.5%, 100% { transform: translateY(-11px); } 95%, 97.5% { transform: translateY(0); } }
+
+/* --------------------------------------------------------------------------
+   8. Reduced motion: no transforms, no sweeps, no cracks, no rolling cursor
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ice-btn, .ice-tab, .ice-switch::after, .ice-well, .ice-chip, .ice-table tr.ice-row td, .ice-curve__fill, .ice-sheet, .ice-penguin .pg-shades, .ice-penguin .pg-lid, .ice-penguin .pg-flip { transition: none; }
+  .ice-btn:hover, .ice-btn:active, .ice-btn.is-hover, .ice-btn.is-active, .ice-table tr.ice-row:hover td { transform: none; }
+  .ice-btn::after, .ice-btn.is-hover::after, .ice-btn.is-frozen::before, .ice-shard, .ice-clock.is-landing, .ice-toast, .ice-toast.is-out, .ice-toast__cube, .ice-penguin.is-flap .pg-flip--l, .ice-penguin.is-flap .pg-flip--r, .ice-penguin.is-idle .pg-lid, .ice-curve.is-grad .ice-chip--grad, .ice-btn__label.is-in { animation: none !important; }
+  .ice-btn.is-loading::before, .ice-btn.is-signing::before, .ice-skel::after { animation: none; background: rgba(255, 255, 255, 0.18); }
+  .ice-slide__rider { animation: none; left: 30%; } .ice-slide__puff { display: none; }
+  .ice-tape__track { animation: none; }
+  .ice-cursor, .ice-cursor__trail { display: none; }
+  .ice-sheet { transform: none; opacity: 0; visibility: hidden; transition: none; } .ice-sheet.is-open { opacity: 1; visibility: visible; }
+}

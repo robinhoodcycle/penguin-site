@@ -3,563 +3,369 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The first community token to graduate on ICE Market. One PENGUIN is worth 1.796 fluid ounces of California water.">
-<meta name="theme-color" content="#06171f">
+<title>Penguin, Priced in Water</title>
 <link rel="icon" href="penguin.jpg">
 <link rel="apple-touch-icon" href="penguin.jpg">
+<meta name="description" content="PENGUIN is the first community token to graduate on ICE Market. It is quoted in California water rights, not SOL.">
+<meta name="theme-color" content="#EEF5FB">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Penguin, Priced in Water">
-<meta property="og:description" content="The first community token to graduate on ICE Market. One PENGUIN is worth 1.796 fluid ounces of California water.">
+<meta property="og:description" content="The first community token to graduate on ICE Market. One PENGUIN is worth about 1.8 fluid ounces of California water.">
 <meta property="og:image" content="penguin.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Penguin, Priced in Water">
-<meta name="twitter:description" content="The first community token to graduate on ICE Market. One PENGUIN is worth 1.796 fluid ounces of California water.">
+<meta name="twitter:description" content="The first community token to graduate on ICE Market. One PENGUIN is worth about 1.8 fluid ounces of California water.">
 <meta name="twitter:image" content="penguin.jpg">
-<style>html{-webkit-text-size-adjust:100%}img{max-width:100%}</style>
-<title>Penguin, Priced in Water</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;700&display=swap">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="brand/ice.css">
 <style>
-/* Dark-first: the subject is deep water, so the bare :root carries the dark palette and a
-   forced-light viewer gets the shallow-water variant below. */
-:root {
-  --ground:    #06171f;
-  --surface:   #0c2836;
-  --surface-2: #113442;
-  --ink:       #e6f3f8;
-  --ink-dim:   #8ca9b5;
-  --line:      #1b4152;
-  --cyan:      #67cadf;
-  --beak:      #f2822f;
-  --up:        #5fd0a4;
-
-  --display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
-  --body: "Schibsted Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-
-  --measure: 62ch;
-  --pad: clamp(20px, 5vw, 56px);
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --ground:    #f2f8fb;
-    --surface:   #ffffff;
-    --surface-2: #e7f1f6;
-    --ink:       #06202b;
-    --ink-dim:   #4d6f7d;
-    --line:      #cbdee7;
-    --cyan:      #177f9b;
-    --beak:      #c75c12;
-    --up:        #1a7f5c;
+  :root {
+    --ink: #0B1B2B; --mu: #4E6A82; --line: rgba(11, 27, 43, 0.12); --glacier: #7CD4F5; --gd: #2E7FB8; --deep: #06283F; --gold: #F2C14E;
+    --display: "Unbounded", Impact, sans-serif; --body: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; --mono: "IBM Plex Mono", Menlo, Consolas, monospace;
+    --font-ice-words: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; --font-ice-nums: "IBM Plex Mono", Menlo, Consolas, monospace;
     color-scheme: light;
   }
-}
-:root[data-theme="light"] {
-  --ground:    #f2f8fb;
-  --surface:   #ffffff;
-  --surface-2: #e7f1f6;
-  --ink:       #06202b;
-  --ink-dim:   #4d6f7d;
-  --line:      #cbdee7;
-  --cyan:      #177f9b;
-  --beak:      #c75c12;
-  --up:        #1a7f5c;
-  color-scheme: light;
-}
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; overflow: hidden; background: #EEF5FB url("assets/ice-sheet.jpg") center / cover no-repeat; color: var(--ink); font: 400 15px / 1.5 var(--body); -webkit-font-smoothing: antialiased; }
+  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120% 70% at 50% 110%, rgba(46, 127, 184, 0.14), rgba(46, 127, 184, 0) 60%); }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 
-* { box-sizing: border-box; }
+  /* ---- the three columns, in the reference's proportions ---- */
+  .wordmark { position: fixed; left: 50%; top: 2.4vw; width: clamp(168px, 16.5vw, 292px); transform: translateX(-50%); z-index: 3; }
+  .wordmark img { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 14px rgba(14, 74, 115, 0.18)); }
+  .col { position: fixed; top: 6.2vw; z-index: 3; }
+  .col--l { left: 7vw; width: 28vw; }
+  .col--r { left: 68vw; width: 27vw; }
+  .tag { display: inline-flex; align-items: center; height: 1.9vw; padding: 0 0.7vw; border-radius: 100px; background: rgba(255, 255, 255, 0.72); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(124, 212, 245, 0.45); font: 500 0.82vw / 1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--gd); white-space: nowrap; }
+  .headline { margin: 1.3vw 0 0; font: 700 1.75vw / 1.18 var(--display); letter-spacing: -0.01em; text-wrap: balance; }
+  .menu { display: flex; flex-direction: column; align-items: flex-start; gap: 0.75vw; margin-top: 1.3vw; }
+  .menu button { position: relative; font: 500 1.08vw / 1.35 var(--body); color: var(--ink); padding: 0.1vw 0; }
+  .menu button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; border-radius: 2px; background: var(--glacier); transform: scaleX(0); transform-origin: left; transition: transform 220ms var(--ice-ease); }
+  .menu button:hover::after, .menu button:focus-visible::after { transform: scaleX(1); }
+  .menu button:focus-visible { outline: 0; }
+  .note { margin: 1.05vw 0 0; font: 400 0.78vw / 1.45 var(--body); color: var(--mu); max-width: 30ch; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7vw; margin-top: 1.4vw; }
+  .actions .ice-clock { height: 30px; }
+  .x { display: inline-flex; align-items: center; justify-content: center; width: 1.9vw; height: 1.9vw; min-width: 28px; min-height: 28px; border-radius: 50%; background: rgba(255, 255, 255, 0.72); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(124, 212, 245, 0.45); color: var(--ink); }
+  .x svg { width: 55%; height: 55%; }
+  .x:hover { background: #fff; }
 
-body {
-  margin: 0;
-  background: var(--ground);
-  color: var(--ink);
-  font-family: var(--body);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+  /* ---- the penguin ---- */
+  .hero { position: fixed; left: 50%; bottom: -2.5vh; height: min(88vh, 64vw); width: min(88vh, 64vw); transform: translateX(-50%); z-index: 2; animation: hero-in 700ms var(--ice-ease) both; }
+  @keyframes hero-in { from { transform: translateX(-50%) translateY(26px); } to { transform: translateX(-50%) translateY(0); } }
+  .pg2 { position: relative; width: 100%; height: 100%; cursor: default; }
+  .pg2__body { position: absolute; inset: 0; transform-origin: 50% 90%; will-change: transform; }
+  .pg2__base { position: absolute; inset: 0; width: 100%; height: 100%; user-select: none; }
+  .pg2__eye { position: absolute; overflow: hidden; border-radius: 50%; }
+  .pg2__iris { position: absolute; will-change: transform; user-select: none; }
+  .pg2__lid { position: absolute; left: -10%; right: -10%; top: -6%; height: 112%; border-radius: 0 0 50% 50% / 0 0 40% 40%; background: #EEF1F4; box-shadow: inset 0 -3px 6px rgba(20, 40, 60, 0.18); transform: translateY(-104%); }
+  .pg2__shades { position: absolute; will-change: transform, filter; transform-origin: 50% 42%; user-select: none; filter: drop-shadow(0 3px 4px rgba(10, 30, 50, 0.2)); }
+  /* the light travelling across the glass. Masked to the lens, so it never touches the gold. */
+  .pg2__glint { --gx: 50%; --gy: 50%; position: absolute; pointer-events: none; opacity: 0;
+    transform-origin: 50% 42%; will-change: transform, opacity; mix-blend-mode: screen;
+    -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    background:
+      /* ellipse, not circle: a circle radius cannot be a percentage, and an invalid
+         radius drops the whole background declaration silently */
+      radial-gradient(ellipse 26% 19% at var(--gx) var(--gy), rgba(228, 246, 255, 0.62), rgba(205, 234, 252, 0.22) 55%, transparent 82%),
+      radial-gradient(ellipse 58% 66% at var(--gx) var(--gy), rgba(150, 205, 242, 0.26), transparent 78%); }
+  @media (prefers-reduced-motion: reduce) { .pg2__glint { display: none; } }
+  .disclosure { position: fixed; left: 8vw; bottom: 1.6vw; z-index: 3; font: 400 0.7vw / 1.4 var(--mono); color: var(--mu); max-width: 20vw; }
 
-/* A faint depth gradient, as if the page sits a few metres under. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(1100px 620px at 76% -8%, color-mix(in srgb, var(--cyan) 15%, transparent), transparent 62%),
-    radial-gradient(760px 520px at 8% 4%, color-mix(in srgb, var(--beak) 7%, transparent), transparent 66%);
-  z-index: 0;
-}
+  /* ---- the sheets ---- */
+  .sheet { position: fixed; inset: 0; z-index: 20; overflow: auto; background: rgba(244, 249, 252, 0.97); color: var(--ink); transform: translateY(100%); visibility: hidden; transition: transform 420ms var(--ice-ease), visibility 0s 420ms; box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.9), inset 0 0 0 1px rgba(124, 212, 245, 0.35); }
+  .sheet.is-open { transform: translateY(0); visibility: visible; transition: transform 420ms var(--ice-ease), visibility 0s; }
+  .sheet__inner { max-width: 960px; margin: 0 auto; padding: 7vh 32px 10vh; }
+  .sheet__close { position: fixed; right: 28px; top: 24px; z-index: 21; }
+  .sheet h2 { margin: 0 0 14px; font: 700 clamp(28px, 3.2vw, 46px) / 1.1 var(--display); letter-spacing: -0.015em; text-wrap: balance; }
+  .sheet .lede { margin: 0 0 26px; font: 500 clamp(17px, 1.35vw, 21px) / 1.4 var(--body); max-width: 40ch; text-wrap: pretty; }
+  .sheet p { margin: 0 0 14px; max-width: 62ch; font-size: 15.5px; text-wrap: pretty; }
+  .sheet .mu { color: var(--mu); }
+  .sheet .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin: 22px 0; }
+  .sheet .cell { padding: 16px 18px; border-radius: 14px; background: #fff; box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px var(--line); }
+  .sheet .cell b { display: block; font: 700 22px / 1.1 var(--display); letter-spacing: -0.01em; margin-bottom: 6px; }
+  .sheet .cell span { font: 400 13px / 1.4 var(--body); color: var(--mu); }
+  /* the real rendered cubes, not the CSS placeholder */
+  .sheet .cubes { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 6px; margin: 20px 0 26px; }
+  .sheet .cubes div { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px 12px; border-radius: 14px; font: 500 13px / 1.25 var(--body); text-align: center; transition: background 200ms var(--ice-ease); }
+  .sheet .cubes div:hover { background: rgba(255, 255, 255, 0.7); }
+  .sheet .cubes img { width: 76px; height: 76px; object-fit: contain; transition: transform 220ms var(--ice-ease); }
+  .sheet .cubes div:hover img { transform: translateY(-3px) scale(1.05); }
+  .sheet .cubes small { display: block; font: 400 10.5px / 1.3 var(--mono); letter-spacing: 0.04em; color: var(--gd); margin-top: 2px; }
+  .sheet .route { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 20px 0 8px; font: 500 15px / 1.2 var(--body); }
+  .sheet .route img { width: 54px; height: 54px; object-fit: contain; }
+  .sheet .route i { font-style: normal; color: var(--mu); font-size: 18px; }
+  .sheet .route b { font: 600 15px / 1.2 var(--mono); }
+  .sheet .pickrow { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; margin: 10px 0 2px; }
+  .sheet .pickrow img { width: 50px; height: 50px; object-fit: contain; }
+  .sheet .pickrow em { font: 400 12px / 1 var(--mono); color: var(--mu); font-style: normal; margin-left: 6px; }
+  .sheet .quote { margin: 24px 0; padding: 20px 22px; border-radius: 14px; background: var(--inst); color: var(--inst-tx); font: 500 clamp(16px, 1.3vw, 20px) / 1.45 var(--body); box-shadow: inset 0 0 0 1px var(--inst-bd); max-width: 52ch; }
+  .sheet .quote small { display: block; margin-top: 10px; font: 400 12px / 1.4 var(--mono); color: var(--inst-mu); }
+  .sheet .split { display: flex; height: 26px; border-radius: 8px; overflow: hidden; gap: 3px; margin: 8px 0 8px; max-width: 560px; }
+  .sheet .split span { display: grid; place-items: center; font: 500 11px / 1 var(--mono); color: #fff; background: var(--ice-acc2); }
+  .sheet .split span:first-child { flex: 2; background: var(--ice-acc); } .sheet .split span:nth-child(2) { background: #B98A16; } .sheet .split span:nth-child(3) { background: #3E85B0; } .sheet .split span:nth-child(4) { background: #7597AD; }
+  .sheet .actions { margin-top: 26px; gap: 10px; }
+  .sheet ol { padding-left: 20px; max-width: 62ch; } .sheet ol li { margin-bottom: 8px; }
+  .sheet .fine { font: 400 12.5px / 1.5 var(--mono); color: var(--mu); max-width: 70ch; }
 
-.wrap {
-  position: relative;
-  z-index: 1;
-  max-width: 1060px;
-  margin: 0 auto;
-  padding: 0 var(--pad) 72px;
-}
+  /* ---- a few commodities, scattered in the empty ice around him ---- */
+  .scatter { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+  .cube { position: fixed; left: var(--x); top: var(--y); width: var(--s); height: var(--s); pointer-events: auto; opacity: 0.001; filter: blur(6px); animation: cube-in 720ms var(--ice-ease) calc(520ms + var(--i) * 55ms) both; }
+  .cube--near { z-index: 3; }
+  .cube--far { z-index: 1; }
+  .cube__lift { display: block; width: 100%; height: 100%; transition: transform 200ms var(--ice-ease); }
+  .cube img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; filter: drop-shadow(0 10px 14px rgba(14, 74, 115, 0.18)); animation: drift var(--dur) ease-in-out var(--delay) infinite alternate; }
+  .cube--far img { filter: blur(1.3px) drop-shadow(0 6px 10px rgba(14, 74, 115, 0.12)); opacity: 0.85; }
+  .cube:hover .cube__lift, .cube:focus-visible .cube__lift { transform: translateY(-4px) scale(1.05); }
+  .cube:focus-visible { outline: 0; }
+  .cube__tag { position: absolute; left: 50%; top: calc(100% + 2px); transform: translate(-50%, 4px); padding: 4px 8px; border-radius: 6px; background: var(--inst); color: var(--inst-tx); font: 500 11px / 1 var(--mono); letter-spacing: 0.02em; white-space: nowrap; opacity: 0; transition: opacity 200ms ease, transform 200ms var(--ice-ease); pointer-events: none; }
+  .cube:hover .cube__tag, .cube:focus-visible .cube__tag { opacity: 1; transform: translate(-50%, 0); }
+  @keyframes drift { from { transform: translate3d(0, 0, 0) rotate(var(--r0)); } to { transform: translate3d(0, var(--dy), 0) rotate(var(--r1)); } }
+  @keyframes cube-in { from { opacity: 0; filter: blur(8px); } to { opacity: 1; filter: blur(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .cube { animation: none; opacity: 1; filter: none; }
+    .cube img { animation: none; }
+    .cube--far img { filter: blur(1.3px); }
+    .cube__lift { transition: none; }
+    .hero { animation: none; }
+  }
 
-/* ---- masthead ---------------------------------------------------------- */
-.masthead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 22px 0 0;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-}
-.masthead b { color: var(--ink); font-weight: 600; }
-
-/* ---- hero -------------------------------------------------------------- */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
-  gap: clamp(24px, 5vw, 52px);
-  align-items: center;
-  padding: clamp(32px, 6vw, 60px) 0 clamp(28px, 5vw, 48px);
-}
-.portrait {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  aspect-ratio: 1;
-}
-.portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.portrait figcaption {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 26px 14px 10px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #dff0f7;
-  background: linear-gradient(to top, rgba(4,16,22,0.88), transparent);
-}
-
-.ticker {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: clamp(56px, 12vw, 108px);
-  line-height: 0.88;
-  letter-spacing: -0.035em;
-  margin: 0 0 18px;
-  text-wrap: balance;
-}
-.thesis {
-  font-size: clamp(19px, 2.4vw, 25px);
-  line-height: 1.38;
-  max-width: 24ch;
-  margin: 0 0 22px;
-  text-wrap: balance;
-}
-.thesis .qty { color: var(--beak); font-weight: 700; white-space: nowrap; }
-
-.quote-row {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  flex-wrap: wrap;
-  font-family: var(--mono);
-}
-.usd { font-size: clamp(22px, 3.2vw, 30px); font-weight: 600; font-variant-numeric: tabular-nums; }
-.delta {
-  color: var(--up);
-  font-size: 14px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  border: 1px solid color-mix(in srgb, var(--up) 42%, transparent);
-  border-radius: 999px;
-  padding: 3px 10px;
-}
-.delta.down { color: var(--beak); border-color: color-mix(in srgb, var(--beak) 42%, transparent); }
-.asof { font-size: 11px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; }
-
-/* ---- gauge strip ------------------------------------------------------- */
-.gauges {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(152px, 1fr));
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-.gauge { padding: 18px 20px 16px; border-left: 1px solid var(--line); }
-.gauge:first-child { border-left: 0; }
-.gauge dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  margin: 0 0 6px;
-}
-.gauge dd {
-  margin: 0;
-  font-family: var(--mono);
-  font-size: 19px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ---- sections ---------------------------------------------------------- */
-section { padding: clamp(40px, 7vw, 66px) 0 0; }
-.eyebrow {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--cyan);
-  margin: 0 0 12px;
-}
-h2 {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(27px, 4.2vw, 40px);
-  line-height: 1.06;
-  letter-spacing: -0.022em;
-  margin: 0 0 18px;
-  text-wrap: balance;
-}
-p { max-width: var(--measure); margin: 0 0 16px; }
-p.lede { font-size: 18px; color: var(--ink); }
-.dim { color: var(--ink-dim); }
-
-/* ---- water conversion figure ------------------------------------------- */
-.conversion {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  overflow: hidden;
-  margin: 26px 0 0;
-}
-.step { background: var(--surface); padding: 20px; }
-.step .n {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  display: block;
-  margin-bottom: 8px;
-}
-.step .v {
-  font-family: var(--mono);
-  font-size: 17px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  display: block;
-  margin-bottom: 4px;
-}
-.step .v.accent { color: var(--beak); }
-.step small { color: var(--ink-dim); font-size: 13px; line-height: 1.45; display: block; }
-
-/* ---- record ------------------------------------------------------------ */
-.record { border-top: 1px solid var(--line); margin-top: 26px; }
-.entry {
-  display: grid;
-  grid-template-columns: 168px minmax(0, 1fr);
-  gap: 20px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--line);
-  align-items: baseline;
-}
-.entry time {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--ink-dim);
-  letter-spacing: 0.04em;
-}
-.entry p { margin: 0; }
-.entry strong { font-weight: 700; }
-
-/* ---- contract ---------------------------------------------------------- */
-.contract {
-  margin-top: 28px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface);
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.contract .addr {
-  font-family: var(--mono);
-  font-size: 13px;
-  word-break: break-all;
-  min-width: 0;
-}
-.contract .label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  display: block;
-  margin-bottom: 5px;
-}
-button.copy {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ground);
-  background: var(--beak);
-  border: 0;
-  border-radius: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: opacity 140ms ease;
-  flex-shrink: 0;
-}
-button.copy:hover { opacity: 0.86; }
-button.copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
-
-/* ---- links ------------------------------------------------------------- */
-.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-.links a {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink);
-  text-decoration: none;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 10px 18px;
-  background: var(--surface);
-  transition: border-color 140ms ease, color 140ms ease;
-}
-.links a:hover { border-color: var(--cyan); color: var(--cyan); }
-.links a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
-.links a.primary { background: var(--beak); border-color: var(--beak); color: var(--ground); font-weight: 600; }
-.links a.primary:hover { color: var(--ground); opacity: 0.86; }
-
-footer {
-  margin-top: clamp(48px, 8vw, 80px);
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--ink-dim);
-}
-footer p { max-width: 70ch; }
-
-@media (max-width: 720px) {
-  .hero { grid-template-columns: minmax(0, 1fr); }
-  .portrait { max-width: 260px; }
-  .entry { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-}
+  @media (max-width: 700px) {
+    body { overflow: auto; }
+    .scatter { display: none; }
+    .wordmark { position: static; width: 210px; max-width: 66%; margin: 22px 20px 4px; transform: none; }
+    .col { position: static; width: auto; padding: 8px 20px 0; }
+    .tag { height: 28px; padding: 0 10px; font-size: 12px; }
+    .headline { font-size: 24px; margin-top: 12px; }
+    .menu { gap: 6px; margin-top: 12px; } .menu button { font-size: 17px; min-height: 40px; }
+    .note { font-size: 14px; max-width: 34ch; margin-top: 12px; }
+    .actions { gap: 10px; margin-top: 14px; } .x { width: 40px; height: 40px; }
+    .hero { position: relative; left: auto; bottom: auto; transform: none; width: min(100%, 520px); height: auto; aspect-ratio: 1 / 1; margin: 10px auto -8vw; animation: none; }
+    .disclosure { position: static; font-size: 11px; max-width: none; padding: 0 20px 28px; }
+    .sheet__inner { padding: 64px 20px 60px; }
+  }
+</style>
+<style>
+  /* PENGUIN has no ice-block wordmark of its own, so it is set rather than faked as an image. */
+  .wordmark { display: block; text-align: center; text-decoration: none; width: auto; }
+  .wordmark b {
+    display: block; font: 900 clamp(26px, 3.1vw, 54px) / 1 var(--display); letter-spacing: -0.02em;
+    color: #BFE6FA; -webkit-text-stroke: 1px rgba(255,255,255,0.9);
+    text-shadow: 0 1px 0 #fff, 0 3px 0 #8FC9E8, 0 6px 14px rgba(14,74,115,0.28);
+  }
+  .wordmark small {
+    display: block; margin-top: 0.35vw; font: 500 0.72vw / 1 var(--mono);
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--gd);
+  }
+  /* the live figures, in the slot the reference used for its payout clock */
+  .figs { display: flex; flex-wrap: wrap; gap: 0.5vw 1.2vw; margin-top: 1vw; }
+  .figs div { min-width: 5.6vw; }
+  .figs dt { font: 500 0.66vw / 1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--mu); margin: 0 0 0.25vw; }
+  .figs dd { margin: 0; font: 500 0.95vw / 1 var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+  .figs dd.up { color: #1E8F66; }
+  .figs dd.down { color: #C4532E; }
+  .ca { margin-top: 1vw; display: flex; align-items: center; gap: 0.5vw; flex-wrap: wrap; }
+  .ca code { font: 400 0.68vw / 1.3 var(--mono); color: var(--mu); word-break: break-all; max-width: 22vw; }
+  @media (max-width: 900px) {
+    .figs dt { font-size: 9px; } .figs dd { font-size: 13px; } .ca code { font-size: 10px; max-width: 70vw; }
+    .wordmark small { font-size: 9px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<a class="wordmark" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" aria-label="Penguin on ICE Market"><b>PENGUIN</b><small>on ICE Market</small></a>
 
-  <div class="masthead">
-    <span><b>PENGUIN</b> &nbsp;·&nbsp; Solana</span>
-    <span>Quoted in H2O &nbsp;·&nbsp; California water</span>
+<section class="col col--l">
+  <span class="tag">first to graduate</span>
+  <h1 class="headline">priced in california<br>water, not sol</h1>
+  <nav class="menu" aria-label="About Penguin">
+    <button type="button" data-sheet="water">Why water</button>
+    <button type="button" data-sheet="paid">How holders get paid</button>
+    <button type="button" data-sheet="grad">The graduation</button>
+    <button type="button" data-sheet="buy">Where to buy</button>
+  </nav>
+</section>
+
+<section class="col col--r">
+  <span class="tag">live</span>
+  <h2 class="headline">one penguin buys<br><span id="f-floz-hero">1.796 fl oz</span> of water</h2>
+  <p class="note">PENGUIN trades against H2O, the Nasdaq Veles California Water Index. Half of every trading fee goes to holders, paid in water rather than dollars.</p>
+  <div class="actions">
+    <a class="ice-btn ice-btn--primary" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice">Trade on ICE Market</a>
+    <a class="ice-btn ice-btn--gold" href="https://dexscreener.com/solana/Gg5RDBD9Gjqfp1VbMc1dWDiqc1PHooRiaFai2CVySZqZ" target="_blank" rel="noopener">Chart</a>
+    <a class="x" href="https://x.com/TradeOnIce" target="_blank" rel="noopener" aria-label="ICE Market on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.9l-5.4-7-6.2 7H1.4l8-9.2L1 2h7l4.9 6.4L18.9 2zm-1.2 18h1.9L7.4 3.9H5.4L17.7 20z" fill="currentColor"/></svg></a>
   </div>
-
-  <div class="hero">
-    <figure class="portrait">
-      <img src="penguin.jpg" alt="The Penguin token mascot">
-      <figcaption>PENGUIN / H2O</figcaption>
-    </figure>
-
-    <div>
-      <h1 class="ticker">PENGUIN</h1>
-      <p class="thesis">One PENGUIN is worth <span class="qty" id="f-floz-hero">1.796 fluid ounces</span> of California water.</p>
-      <div class="quote-row">
-        <span class="usd" id="f-usd">$0.00001937</span>
-        <span class="delta" id="f-delta">+272.59% 24h</span>
-        <span class="asof" id="f-asof">18 Sep 2026</span>
-      </div>
-    </div>
-  </div>
-
-  <dl class="gauges">
-    <div class="gauge"><dt>Fully diluted</dt><dd id="f-fdv">$19,375</dd></div>
-    <div class="gauge"><dt>Volume 24h</dt><dd id="f-vol">$74,296</dd></div>
-    <div class="gauge"><dt>Pool liquidity</dt><dd id="f-liq">$10,454</dd></div>
-    <div class="gauge"><dt>Holders</dt><dd id="f-holders">57</dd></div>
-    <div class="gauge"><dt>Trading fee</dt><dd>2.00%</dd></div>
+  <dl class="figs">
+    <div><dt>Price</dt><dd id="f-usd">$0.00001937</dd></div>
+    <div><dt>24h</dt><dd id="f-delta" class="up">+272.59%</dd></div>
+    <div><dt>Market cap</dt><dd id="f-fdv">$19,375</dd></div>
+    <div><dt>Volume 24h</dt><dd id="f-vol">$74,296</dd></div>
+    <div><dt>Holders</dt><dd id="f-holders">57</dd></div>
   </dl>
+  <div class="ca">
+    <button class="ice-btn ice-btn--frost ice-btn--sm" type="button" id="copy">Copy address</button>
+    <code id="ca">79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice</code>
+  </div>
+</section>
 
-  <section>
-    <p class="eyebrow">Why the price is in water</p>
-    <h2>Every other memecoin is priced in SOL. This one is priced in an acre-foot of California water.</h2>
-    <p class="lede">On ICE Market a token launches against a commodity rather than against SOL or a stablecoin. PENGUIN launched against H2O, which tracks the Nasdaq Veles California Water Index — the benchmark price for water rights traded in California, quoted per acre-foot.</p>
-    <p class="dim">That makes the exchange rate below a real one, not a metaphor. It moves when water moves.</p>
-
-    <div class="conversion">
-      <div class="step">
-        <span class="n">The unit</span>
-        <span class="v">1 acre-foot</span>
-        <small>325,851 gallons. Enough to cover an acre of land a foot deep, or supply two California households for a year.</small>
-      </div>
-      <div class="step">
-        <span class="n">Today's water price</span>
-        <span class="v" id="f-h2o">$450.00</span>
-        <small>Per acre-foot, from the NQH2O index. This is the number the whole market is denominated against.</small>
-      </div>
-      <div class="step">
-        <span class="n">One PENGUIN buys</span>
-        <span class="v accent" id="f-floz">1.796 fl oz</span>
-        <small><span id="f-af">0.0000000431</span> of an acre-foot. Roughly a shot glass of water rights, which is the joke and also literally true.</small>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">The record</p>
-    <h2>First community token to graduate on ICE Market</h2>
-    <p>A token starts life on a bonding curve. It graduates when enough has been bought to fill that curve, at which point the liquidity moves to a permanent pool and can never be withdrawn — not by the creator, not by the protocol.</p>
-
-    <div class="record">
-      <div class="entry">
-        <time datetime="2026-09-17T19:38Z">17 Sep 2026, 19:38 UTC</time>
-        <p>Launched against H2O with a 2% trading fee. <strong>Curve opens.</strong></p>
-      </div>
-      <div class="entry">
-        <time datetime="2026-09-17">17 Sep 2026</time>
-        <p>Curve fills at a $35,000 market cap. <strong>Graduated.</strong> Liquidity migrates to a locked pool.</p>
-      </div>
-      <div class="entry">
-        <time datetime="2026-09-18">Since graduation</time>
-        <p><strong id="f-earn">1.2017 H2O</strong> paid out to holders — about <span id="f-earn-usd">$541</span> of California water, distributed automatically rather than claimed.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">Holding it</p>
-    <h2>Holders are paid in water, not dollars</h2>
-    <p>Half of every trading fee goes to the people holding PENGUIN, and it arrives denominated in H2O. You are not paid a share of revenue in a stablecoin; you are paid in the commodity the market is priced against. Payouts run on a schedule and land in your wallet on their own.</p>
-
-    <div class="contract">
-      <div class="addr">
-        <span class="label">Contract address</span>
-        <span id="ca">79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice</span>
-      </div>
-      <button class="copy" id="copy" type="button">Copy</button>
-    </div>
-
-    <div class="links">
-      <a class="primary" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice">Trade on ICE Market</a>
-      <a href="https://dexscreener.com/solana/Gg5RDBD9Gjqfp1VbMc1dWDiqc1PHooRiaFai2CVySZqZ">DexScreener</a>
-      <a href="https://solscan.io/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice">Solscan</a>
-      <a href="https://www.icemarket.fun/commodities/H2O">About H2O</a>
-    </div>
-  </section>
-
-  <footer>
-    <p>PENGUIN is a memecoin. Its price is quoted against a water index; it is not a claim on water, and nothing here is a promise about price. Figures shown were read from the ICE Market indexer on 18 September 2026 and move continuously.</p>
-  </footer>
-
+<div class="scatter" aria-hidden="true">
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:7vw;--y:48vh;--s:16vh;--dur:7.1s;--delay:-2.1s;--r0:-4deg;--r1:3deg;--dy:-11px;--i:1"><span class="cube__lift"><img src="brand/assets/cubes/H2O.webp" alt=""></span><span class="cube__tag">H2O California Water</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:70vh;--s:11vh;--dur:6.9s;--delay:-1.2s;--r0:5deg;--r1:-2deg;--dy:-9px;--i:2"><span class="cube__lift"><img src="brand/commodities/png/GLD.png" alt=""></span><span class="cube__tag">GLD Gold</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:19vw;--y:64vh;--s:8vh;--dur:8.8s;--delay:-6s;--r0:2deg;--r1:-5deg;--dy:-7px;--i:3"><span class="cube__lift"><img src="brand/commodities/png/DAYTONA.png" alt=""></span><span class="cube__tag">DAYTONA Rolex Daytona</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:13vw;--y:84vh;--s:7vh;--dur:9.1s;--delay:-3s;--r0:-6deg;--r1:2deg;--dy:-6px;--i:4"><span class="cube__lift"><img src="brand/commodities/png/BURGER.png" alt=""></span><span class="cube__tag">BURGER Big Mac</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:84vw;--y:50vh;--s:14vh;--dur:8.6s;--delay:-5.2s;--r0:3deg;--r1:-4deg;--dy:-10px;--i:5"><span class="cube__lift"><img src="brand/commodities/png/LAMBO.png" alt=""></span><span class="cube__tag">LAMBO Lamborghini</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:89vw;--y:68vh;--s:12vh;--dur:7.2s;--delay:-2.8s;--r0:-2deg;--r1:5deg;--dy:-9px;--i:6"><span class="cube__lift"><img src="brand/commodities/png/CL.png" alt=""></span><span class="cube__tag">CL WTI Crude</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:75vw;--y:82vh;--s:8vh;--dur:9.4s;--delay:-1.9s;--r0:4deg;--r1:-3deg;--dy:-8px;--i:7"><span class="cube__lift"><img src="brand/commodities/png/PIZZA.png" alt=""></span><span class="cube__tag">PIZZA Large Pepperoni</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:95vw;--y:58vh;--s:7vh;--dur:6.6s;--delay:-3.7s;--r0:-5deg;--r1:2deg;--dy:-7px;--i:8"><span class="cube__lift"><img src="brand/commodities/png/SLV.png" alt=""></span><span class="cube__tag">SLV Silver</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:27vh;--s:6vh;--dur:9.6s;--delay:-0.9s;--r0:3deg;--r1:-5deg;--dy:-6px;--i:9"><span class="cube__lift"><img src="brand/commodities/png/DLORE.png" alt=""></span><span class="cube__tag">DLORE AWP Dragon Lore</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:3vw;--y:40vh;--s:6vh;--dur:8.1s;--delay:-4.9s;--r0:-3deg;--r1:4deg;--dy:-6px;--i:10"><span class="cube__lift"><img src="brand/commodities/png/PIKAEX238.png" alt=""></span><span class="cube__tag">PIKAEX238 Pikachu ex</span></a>
 </div>
 
+<div class="hero" id="hero" aria-hidden="true"><div id="pg"></div></div>
+<p class="disclosure">PENGUIN is a memecoin. Its price is quoted against a water index; it is not a claim on water.</p>
+
+<div class="sheet" id="sheet-water" role="dialog" aria-modal="true" aria-labelledby="h-water">
+  <button class="ice-btn ice-btn--clear ice-btn--icon sheet__close" type="button" aria-label="Close"><svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <div class="sheet__inner">
+    <h2 id="h-water">Every other memecoin is priced in SOL. This one is priced in water.</h2>
+    <p class="lede">On ICE Market a coin launches against a commodity instead of SOL. PENGUIN launched against H2O, which tracks the Nasdaq Veles California Water Index — the benchmark price for water rights traded in California, quoted per acre-foot.</p>
+    <p>An acre-foot is 325,851 gallons: enough to cover an acre of land a foot deep, or supply two California households for a year. It trades today at <b id="f-h2o">$450.00</b>.</p>
+    <p>So the exchange rate is a real one, not a metaphor. One PENGUIN is <b id="f-af">0.0000000431</b> of an acre-foot, which works out at <b id="f-floz">1.796 fl oz</b>. Roughly a shot glass of water rights. It moves when water moves.</p>
+    <div class="cubes"><div><img src="brand/assets/cubes/H2O.webp" alt="" width="76" height="76" loading="lazy" decoding="async"><span>California Water<small>H2O</small></span></div></div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-paid" role="dialog" aria-modal="true" aria-labelledby="h-paid">
+  <button class="ice-btn ice-btn--clear ice-btn--icon sheet__close" type="button" aria-label="Close"><svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <div class="sheet__inner">
+    <h2 id="h-paid">Holders are paid in water, not dollars.</h2>
+    <p class="lede">Half of every trading fee goes to the people holding PENGUIN, and it arrives denominated in H2O.</p>
+    <p>You are not paid a share of revenue in a stablecoin. You are paid in the commodity the market is priced against. Payouts run on a schedule and land in your wallet on their own — nothing to stake, nothing to claim.</p>
+    <p><b id="f-earn">1.2017 H2O</b> has been paid out to holders so far, about <b id="f-earn-usd">$541</b> of California water.</p>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-grad" role="dialog" aria-modal="true" aria-labelledby="h-grad">
+  <button class="ice-btn ice-btn--clear ice-btn--icon sheet__close" type="button" aria-label="Close"><svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <div class="sheet__inner">
+    <h2 id="h-grad">First community token to graduate on ICE Market.</h2>
+    <p class="lede">A coin starts on a bonding curve. It graduates when enough has been bought to fill that curve.</p>
+    <p>At that point the liquidity moves to a permanent pool and can never be withdrawn — not by the creator, not by the protocol. PENGUIN launched on 17 September 2026 at 19:38 UTC against H2O with a 2% trading fee, and filled its curve the same day at a $35,000 market cap.</p>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-buy" role="dialog" aria-modal="true" aria-labelledby="h-buy">
+  <button class="ice-btn ice-btn--clear ice-btn--icon sheet__close" type="button" aria-label="Close"><svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <div class="sheet__inner">
+    <h2 id="h-buy">Where to buy.</h2>
+    <p class="lede">PENGUIN trades on ICE Market against H2O, and on any Solana router that reaches the pool.</p>
+    <p class="lede"><code>79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice</code></p>
+    <div class="actions">
+      <a class="ice-btn ice-btn--primary" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice">Trade on ICE Market</a>
+      <a class="ice-btn ice-btn--frost" href="https://dexscreener.com/solana/Gg5RDBD9Gjqfp1VbMc1dWDiqc1PHooRiaFai2CVySZqZ" target="_blank" rel="noopener">DexScreener</a>
+      <a class="ice-btn ice-btn--frost" href="https://solscan.io/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" target="_blank" rel="noopener">Solscan</a>
+    </div>
+  </div>
+</div>
+<script src="brand/ice-motion.js"></script>
+<script src="assets/penguin-rig.js"></script>
+<script src="penguin2d.js"></script>
 <script>
-  const btn = document.getElementById("copy");
-  btn.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(document.getElementById("ca").textContent.trim());
-      btn.textContent = "Copied";
-    } catch {
-      btn.textContent = "Press ⌘C";
-    }
-    setTimeout(() => { btn.textContent = "Copy"; }, 1800);
-  });
+(function () {
+  var M = window.IceMotion;
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // ---- the penguin: the geometry comes from prep_assets.py ----
+  var rig = window.ICE_PENGUIN_RIG;
+  var hero = $('#hero');
+  var p = IcePenguin2D.mount($('#pg'), rig, { base: 'assets/penguin-base.webp', irisL: 'assets/iris-l.png', irisR: 'assets/iris-r.png', shades: 'assets/shades.png', lensMask: 'assets/shades-lens-mask.png' });
+  window.penguin = p;
+  window.addEventListener('pointermove', function (e) { p.setPointer(e.clientX, e.clientY); }, { passive: true });
+  document.documentElement.addEventListener('mouseleave', function () { p.setPointer(null); });
+  window.addEventListener('blur', function () { p.setPointer(null); });
+  hero.addEventListener('pointerdown', function () { p.hop(); });
+
+  // ---- clocks ----
+  $$('.ice-clock').forEach(function (c) { M.clock(c); });
+
+  // ---- the cursor is a snowball on this page (fine pointers only; the kit skips touch and reduced motion) ----
+  if (M.cursor) M.cursor.start();
+
+  // ---- the cubes are links; give them their names ----
+  $$('.cube').forEach(function (a) { a.setAttribute('aria-label', a.querySelector('.cube__tag').textContent + ', open the exchange'); a.removeAttribute('tabindex'); });
+
+  // ---- sheets ----
+  var open = null, opener = null;
+  function show(id, btn) {
+    var s = $('#sheet-' + id); if (!s) return;
+    open = s; opener = btn || document.activeElement; s.classList.add('is-open'); s.scrollTop = 0;
+    setTimeout(function () { s.querySelector('.sheet__close').focus({ preventScroll: true }); }, 80);
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    if (!open) return; open.classList.remove('is-open'); open = null; document.body.style.overflow = '';
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+  }
+  $$('[data-sheet]').forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.sheet, b); }); });
+  $$('.sheet__close').forEach(function (b) { b.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  if (location.hash && $('#sheet-' + location.hash.slice(1))) show(location.hash.slice(1));
+})();
 </script>
 
-
 <script>
-/* The figures above are baked into the HTML so the page reads correctly on first paint and if this
-   never runs. This refreshes them from the ICE Market indexer, which serves the same numbers the
-   exchange itself renders. Public endpoint, no key.
-
-   The water line is derived rather than fetched: priceQuote is the price in H2O, H2O is an acre-foot,
-   and an acre-foot is 325,851 gallons. */
+/* The figures are written into the HTML so the page reads correctly on first paint and if this never
+   runs. This refreshes them from the ICE Market indexer — the same public endpoints the exchange reads.
+   The water line is derived: priceQuote is the price in H2O, H2O is an acre-foot, and an acre-foot is
+   325,851 gallons. */
 (function () {
   var MINT = "79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice";
   var API = "https://icemarkets-indexer-prod.fly.dev";
-  var GAL_PER_ACRE_FOOT = 43560 * 7.48051948;
-  var OZ_PER_GAL = 128;
+  var OZ_PER_ACRE_FOOT = 43560 * 7.48051948 * 128;
+  function set(id, t) { var e = document.getElementById(id); if (e && t != null) e.textContent = t; }
+  function usd0(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
+  function usd2(n) { return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function price(n) { return "$" + n.toFixed(n >= 1 ? 2 : n >= 0.01 ? 4 : 8); }
+  function get(p) { return fetch(API + p, { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }
 
-  function set(id, text) {
-    var el = document.getElementById(id);
-    if (el && text != null) el.textContent = text;
-  }
-  var usd0 = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
-  var usd2 = function (n) { return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
-
-  function price(n) {
-    // Sub-cent prices need enough places to mean anything; $0.00 would be worse than stale.
-    var places = n >= 1 ? 2 : n >= 0.01 ? 4 : 8;
-    return "$" + n.toFixed(places);
-  }
-
-  function get(path) {
-    return fetch(API + path, { cache: "no-store" }).then(function (r) {
-      if (!r.ok) throw new Error(path + " " + r.status);
-      return r.json();
-    });
-  }
-
-  Promise.all([get("/markets/" + MINT), get("/commodities/H2O")])
-    .then(function (res) {
-      var m = res[0], h2o = res[1];
-
-      set("f-usd", price(m.priceUsd));
-      set("f-fdv", usd0(m.fdvUsd));
-      set("f-vol", usd0(m.volume24hUsd));
-      set("f-liq", usd0(m.liquidityUsd));
-      set("f-holders", String(m.holders));
-
-      var d = document.getElementById("f-delta");
-      if (d && typeof m.change24h === "number") {
-        d.textContent = (m.change24h >= 0 ? "+" : "") + m.change24h.toFixed(2) + "% 24h";
-        d.classList.toggle("down", m.change24h < 0);
+  Promise.all([get("/markets/" + MINT), get("/commodities/H2O")]).then(function (r) {
+    var m = r[0], h = r[1];
+    set("f-usd", price(m.priceUsd));
+    set("f-fdv", usd0(m.fdvUsd));
+    set("f-vol", usd0(m.volume24hUsd));
+    set("f-holders", String(m.holders));
+    var d = document.getElementById("f-delta");
+    if (d && typeof m.change24h === "number") {
+      d.textContent = (m.change24h >= 0 ? "+" : "") + m.change24h.toFixed(2) + "%";
+      d.className = m.change24h >= 0 ? "up" : "down";
+    }
+    var oz = m.priceQuote * OZ_PER_ACRE_FOOT;
+    set("f-floz-hero", oz.toFixed(3) + " fl oz");
+    set("f-floz", oz.toFixed(3) + " fl oz");
+    set("f-af", m.priceQuote.toFixed(10));
+    if (h && h.priceUsd) {
+      set("f-h2o", usd2(h.priceUsd));
+      if (typeof m.holderEarningsCoin === "number") {
+        set("f-earn", m.holderEarningsCoin.toFixed(4) + " H2O");
+        set("f-earn-usd", usd0(m.holderEarningsCoin * h.priceUsd));
       }
+    }
+  }).catch(function () { /* keep the written-in figures */ });
 
-      var floz = m.priceQuote * GAL_PER_ACRE_FOOT * OZ_PER_GAL;
-      set("f-floz-hero", floz.toFixed(3) + " fluid ounces");
-      set("f-floz", floz.toFixed(3) + " fl oz");
-      set("f-af", m.priceQuote.toFixed(10));
-
-      if (h2o && h2o.priceUsd) {
-        set("f-h2o", usd2(h2o.priceUsd));
-        if (typeof m.holderEarningsCoin === "number") {
-          set("f-earn", m.holderEarningsCoin.toFixed(4) + " H2O");
-          set("f-earn-usd", usd0(m.holderEarningsCoin * h2o.priceUsd));
-        }
-      }
-
-      set("f-asof", new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }));
-    })
-    .catch(function () {
-      /* Leave the baked figures and the date they were read. A stale number that is labelled is
-         better than an empty one. */
+  var b = document.getElementById("copy");
+  if (b) b.addEventListener("click", function () {
+    navigator.clipboard.writeText(document.getElementById("ca").textContent.trim()).then(function () {
+      b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy address"; }, 1600);
     });
+  });
 })();
 </script>
+
 </body>
 </html>
