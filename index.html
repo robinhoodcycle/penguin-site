@@ -37,7 +37,7 @@
   /* ---- the three columns, in the reference's proportions ---- */
   .wordmark { position: fixed; left: 50%; top: 2.4vw; width: clamp(168px, 16.5vw, 292px); transform: translateX(-50%); z-index: 3; }
   .wordmark img { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 14px rgba(14, 74, 115, 0.18)); }
-  .col { position: fixed; top: 6.2vw; z-index: 3; }
+  .col { position: fixed; top: 6.2vw; z-index: 4; }
   .col--l { left: 7vw; width: 28vw; }
   .col--r { left: 68vw; width: 27vw; }
   .tag { display: inline-flex; align-items: center; height: 1.9vw; padding: 0 0.7vw; border-radius: 100px; background: rgba(255, 255, 255, 0.72); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(124, 212, 245, 0.45); font: 500 0.82vw / 1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--gd); white-space: nowrap; }
@@ -134,30 +134,6 @@
     .hero { animation: none; }
   }
 
-  @media (max-width: 700px) {
-    body { overflow: auto; }
-    .scatter { display: none; }
-    .wordmark { position: static; width: 210px; max-width: 66%; margin: 22px 20px 4px; transform: none; }
-    .col { position: static; width: auto; padding: 8px 20px 0; }
-    .tag { height: 28px; padding: 0 10px; font-size: 12px; }
-    .headline { font-size: 24px; margin-top: 12px; }
-    .menu { gap: 6px; margin-top: 12px; } .menu button { font-size: 17px; min-height: 40px; }
-    .note { font-size: 14px; max-width: 34ch; margin-top: 12px; }
-    .actions { gap: 10px; margin-top: 14px; } .x { width: 40px; height: 40px; }
-    .hero { position: relative; left: auto; bottom: auto; transform: none; width: min(100%, 520px); height: auto; aspect-ratio: 1 / 1; margin: 10px auto -8vw; animation: none; }
-    .disclosure { position: static; font-size: 11px; max-width: none; padding: 0 20px 28px; }
-    .wordmark { text-align: left; margin: 22px 20px 4px; }
-    .wordmark b { font-size: 34px; }
-    .wordmark small { font-size: 11px; letter-spacing: 0.18em; margin-top: 6px; }
-    .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 12px; margin-top: 18px; }
-    .figs div { min-width: 0; }
-    .figs dt { font-size: 10px; letter-spacing: 0.1em; margin-bottom: 4px; }
-    .figs dd { font-size: 15px; }
-    .ca { margin-top: 16px; gap: 10px; }
-    .ca code { font-size: 11px; max-width: none; flex: 1 1 100%; line-height: 1.45; }
-    .figs, .ca { padding-bottom: 2px; }
-    .sheet__inner { padding: 64px 20px 60px; }
-  }
 </style>
 <style>
   /* PENGUIN has no ice-block wordmark of its own, so it is set rather than faked as an image. */
@@ -171,15 +147,63 @@
     display: block; margin-top: 0.35vw; font: 500 0.72vw / 1 var(--mono);
     letter-spacing: 0.22em; text-transform: uppercase; color: var(--gd);
   }
-  /* the live figures, in the slot the reference used for its payout clock */
-  .figs { display: flex; flex-wrap: wrap; gap: 0.5vw 1.2vw; margin-top: 1vw; }
-  .figs div { min-width: 5.6vw; }
-  .figs dt { font: 500 0.66vw / 1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--mu); margin: 0 0 0.25vw; }
-  .figs dd { margin: 0; font: 500 0.95vw / 1 var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
-  .figs dd.up { color: #1E8F66; }
-  .figs dd.down { color: #C4532E; }
-  .ca { margin-top: 1vw; display: flex; align-items: center; gap: 0.5vw; flex-wrap: wrap; }
-  .ca code { font: 400 0.68vw / 1.3 var(--mono); color: var(--mu); word-break: break-all; max-width: 22vw; }
+  /* the live figures, cut as ice blocks — the same frosted read as the cubes on the sheet */
+  .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4vw; margin: 1.1vw 0 0; }
+  .block { position: relative; overflow: hidden; min-width: 0; padding: 0.55vw 0.7vw 0.6vw; border-radius: 0.62vw;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(221, 240, 251, 0.74));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 0 0 1px rgba(124, 212, 245, 0.5), 0 10px 20px -14px rgba(14, 74, 115, 0.6);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  /* the lit top facet every cube on this page has */
+  .block::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 46%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0)); pointer-events: none; }
+  .fig dt { font: 500 0.62vw / 1 var(--mono); letter-spacing: 0.13em; text-transform: uppercase; color: var(--mu); margin: 0 0 0.4vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig dd { margin: 0; font: 500 0.95vw / 1 var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig--lead { grid-column: 1 / -1; }
+  .fig--lead dd { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6vw; font-size: 1.32vw; }
+  #f-delta { flex: none; font: 500 0.85vw / 1 var(--mono); }
+  #f-delta.up { color: #1E8F66; }
+  #f-delta.down { color: #C4532E; }
+
+  /* address first, copy on the end of the block */
+  .ca { margin-top: 0.4vw; display: flex; align-items: stretch; padding: 0; }
+  .ca code { position: relative; z-index: 1; flex: 1 1 auto; min-width: 0; display: flex; align-items: center; padding: 0.55vw 0 0.55vw 0.7vw; font: 400 0.68vw / 1.2 var(--mono); color: var(--mu); }
+  /* middle truncation without touching the text: the tail never shrinks, the head ellipses into it */
+  .ca__a { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ca__b { flex: none; white-space: nowrap; }
+  .ca__copy { position: relative; z-index: 1; flex: none; display: grid; place-items: center; width: 2.3vw; min-width: 36px; color: var(--gd); box-shadow: inset 1px 0 0 rgba(124, 212, 245, 0.5); transition: background 180ms var(--ice-ease), color 180ms var(--ice-ease); }
+  .ca__copy:hover, .ca__copy:focus-visible { background: rgba(255, 255, 255, 0.85); color: var(--ink); outline: 0; }
+  .ca__copy svg { width: 0.95vw; min-width: 15px; height: auto; }
+  .ca__copy .tick { display: none; }
+  .ca__copy.is-done { color: #1E8F66; }
+  .ca__copy.is-done .tick { display: block; }
+  .ca__copy.is-done .dup { display: none; }
+
+  @media (max-width: 700px) {
+    body { overflow: auto; }
+    .scatter { display: none; }
+    .wordmark { position: static; width: 210px; max-width: 66%; margin: 22px 20px 4px; transform: none; }
+    .col { position: static; width: auto; padding: 8px 20px 0; }
+    .tag { height: 28px; padding: 0 10px; font-size: 12px; }
+    .headline { font-size: 24px; margin-top: 12px; }
+    .menu { gap: 6px; margin-top: 12px; } .menu button { font-size: 17px; min-height: 40px; }
+    .note { font-size: 14px; max-width: 34ch; margin-top: 12px; }
+    .actions { gap: 10px; margin-top: 14px; } .x { width: 40px; height: 40px; }
+    .hero { position: relative; left: auto; bottom: auto; transform: none; width: min(100%, 520px); height: auto; aspect-ratio: 1 / 1; margin: 14px auto 0; animation: none; }
+    .disclosure { position: static; font-size: 11px; line-height: 1.5; max-width: none; margin: 0; padding: 8px 20px 30px; }
+    .wordmark { text-align: left; margin: 22px 20px 4px; }
+    .wordmark b { font-size: 34px; }
+    .wordmark small { font-size: 11px; letter-spacing: 0.18em; margin-top: 6px; }
+    .figs { gap: 8px; margin-top: 18px; }
+    .block { padding: 10px 11px 11px; border-radius: 13px; }
+    .fig dt { font-size: 9.5px; letter-spacing: 0.1em; margin-bottom: 6px; }
+    .fig dd { font-size: 14px; }
+    .fig--lead dd { font-size: 23px; gap: 10px; }
+    #f-delta { font-size: 13.5px; }
+    .ca { margin-top: 8px; border-radius: 13px; }
+    .ca code { padding: 12px 0 12px 13px; font-size: 12px; }
+    .ca__copy { width: 46px; }
+    .ca__copy svg { width: 17px; }
+    .sheet__inner { padding: 64px 20px 60px; }
+  }
 </style>
 </head>
 <body>
@@ -207,15 +231,17 @@
     <a class="x" href="https://x.com/TradeOnIce" target="_blank" rel="noopener" aria-label="ICE Market on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.9l-5.4-7-6.2 7H1.4l8-9.2L1 2h7l4.9 6.4L18.9 2zm-1.2 18h1.9L7.4 3.9H5.4L17.7 20z" fill="currentColor"/></svg></a>
   </div>
   <dl class="figs">
-    <div><dt>Price</dt><dd id="f-usd">$0.00001937</dd></div>
-    <div><dt>24h</dt><dd id="f-delta" class="up">+272.59%</dd></div>
-    <div><dt>Market cap</dt><dd id="f-fdv">$19,375</dd></div>
-    <div><dt>Volume 24h</dt><dd id="f-vol">$74,296</dd></div>
-    <div><dt>Holders</dt><dd id="f-holders">57</dd></div>
+    <div class="block fig fig--lead"><dt>Price</dt><dd><span id="f-usd">$0.00001937</span><b id="f-delta" class="up">+272.59%</b></dd></div>
+    <div class="block fig"><dt>Market cap</dt><dd id="f-fdv">$19,375</dd></div>
+    <div class="block fig"><dt>Volume 24h</dt><dd id="f-vol">$74,296</dd></div>
+    <div class="block fig"><dt>Holders</dt><dd id="f-holders">57</dd></div>
   </dl>
-  <div class="ca">
-    <button class="ice-btn ice-btn--frost ice-btn--sm" type="button" id="copy">Copy address</button>
-    <code id="ca">79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice</code>
+  <div class="ca block">
+    <code id="ca"><span class="ca__a">79WXymKrRSVVxGZY8qBXAty</span><span class="ca__b">SYNPGkvyKWdu9Zv27Cice</span></code>
+    <button class="ca__copy" type="button" id="copy" aria-label="Copy contract address" title="Copy contract address">
+      <svg class="dup" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5.6" y="5.6" width="8.4" height="8.4" rx="2"/><path d="M10.4 3.4A1.8 1.8 0 0 0 8.6 2H4a2 2 0 0 0-2 2v4.6a1.8 1.8 0 0 0 1.4 1.76"/></svg>
+      <svg class="tick" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.4l3.2 3.2L13 4.8"/></svg>
+    </button>
   </div>
 </section>
 
@@ -224,10 +250,10 @@
   <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:70vh;--s:11vh;--dur:6.9s;--delay:-1.2s;--r0:5deg;--r1:-2deg;--dy:-9px;--i:2"><span class="cube__lift"><img src="brand/assets/cubes/GLD.webp" alt=""></span><span class="cube__tag">GLD Gold</span></a>
   <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:19vw;--y:64vh;--s:8vh;--dur:8.8s;--delay:-6s;--r0:2deg;--r1:-5deg;--dy:-7px;--i:3"><span class="cube__lift"><img src="brand/assets/cubes/DAYTONA.webp" alt=""></span><span class="cube__tag">DAYTONA Rolex Daytona</span></a>
   <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:13vw;--y:84vh;--s:7vh;--dur:9.1s;--delay:-3s;--r0:-6deg;--r1:2deg;--dy:-6px;--i:4"><span class="cube__lift"><img src="brand/assets/cubes/BURGER.webp" alt=""></span><span class="cube__tag">BURGER Big Mac</span></a>
-  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:84vw;--y:50vh;--s:14vh;--dur:8.6s;--delay:-5.2s;--r0:3deg;--r1:-4deg;--dy:-10px;--i:5"><span class="cube__lift"><img src="brand/assets/cubes/LAMBO.webp" alt=""></span><span class="cube__tag">LAMBO Lamborghini</span></a>
-  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:89vw;--y:68vh;--s:12vh;--dur:7.2s;--delay:-2.8s;--r0:-2deg;--r1:5deg;--dy:-9px;--i:6"><span class="cube__lift"><img src="brand/assets/cubes/CL.webp" alt=""></span><span class="cube__tag">CL WTI Crude</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:75vw;--y:82vh;--s:8vh;--dur:9.4s;--delay:-1.9s;--r0:4deg;--r1:-3deg;--dy:-8px;--i:7"><span class="cube__lift"><img src="brand/assets/cubes/PIZZA.webp" alt=""></span><span class="cube__tag">PIZZA Large Pepperoni</span></a>
-  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:95vw;--y:58vh;--s:7vh;--dur:6.6s;--delay:-3.7s;--r0:-5deg;--r1:2deg;--dy:-7px;--i:8"><span class="cube__lift"><img src="brand/assets/cubes/SLV.webp" alt=""></span><span class="cube__tag">SLV Silver</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:79vw;--y:70vh;--s:14vh;--dur:8.6s;--delay:-5.2s;--r0:3deg;--r1:-4deg;--dy:-10px;--i:5"><span class="cube__lift"><img src="brand/assets/cubes/LAMBO.webp" alt=""></span><span class="cube__tag">LAMBO Lamborghini</span></a>
+  <a class="cube cube--near" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:91vw;--y:80vh;--s:12vh;--dur:7.2s;--delay:-2.8s;--r0:-2deg;--r1:5deg;--dy:-9px;--i:6"><span class="cube__lift"><img src="brand/assets/cubes/CL.webp" alt=""></span><span class="cube__tag">CL WTI Crude</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:70vw;--y:88vh;--s:8vh;--dur:9.4s;--delay:-1.9s;--r0:4deg;--r1:-3deg;--dy:-8px;--i:7"><span class="cube__lift"><img src="brand/assets/cubes/PIZZA.webp" alt=""></span><span class="cube__tag">PIZZA Large Pepperoni</span></a>
+  <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:95vw;--y:63vh;--s:7vh;--dur:6.6s;--delay:-3.7s;--r0:-5deg;--r1:2deg;--dy:-7px;--i:8"><span class="cube__lift"><img src="brand/assets/cubes/SLV.webp" alt=""></span><span class="cube__tag">SLV Silver</span></a>
   <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:2vw;--y:27vh;--s:6vh;--dur:9.6s;--delay:-0.9s;--r0:3deg;--r1:-5deg;--dy:-6px;--i:9"><span class="cube__lift"><img src="brand/assets/cubes/DLORE.webp" alt=""></span><span class="cube__tag">DLORE AWP Dragon Lore</span></a>
   <a class="cube cube--far" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice" tabindex="-1" style="--x:3vw;--y:40vh;--s:6vh;--dur:8.1s;--delay:-4.9s;--r0:-3deg;--r1:4deg;--dy:-6px;--i:10"><span class="cube__lift"><img src="brand/assets/cubes/PIKAEX238.webp" alt=""></span><span class="cube__tag">PIKAEX238 Pikachu ex</span></a>
 </div>
@@ -367,7 +393,8 @@
   var b = document.getElementById("copy");
   if (b) b.addEventListener("click", function () {
     navigator.clipboard.writeText(document.getElementById("ca").textContent.trim()).then(function () {
-      b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy address"; }, 1600);
+      b.classList.add("is-done"); b.setAttribute("aria-label", "Address copied");
+      setTimeout(function () { b.classList.remove("is-done"); b.setAttribute("aria-label", "Copy contract address"); }, 1600);
     });
   });
 })();
