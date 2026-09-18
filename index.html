@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The first community token to graduate on ICE Market. One PENGUIN is worth 1.796 fluid ounces of California water.">
+<meta name="theme-color" content="#06171f">
+<link rel="icon" href="penguin.jpg">
+<link rel="apple-touch-icon" href="penguin.jpg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Penguin, Priced in Water">
+<meta property="og:description" content="The first community token to graduate on ICE Market. One PENGUIN is worth 1.796 fluid ounces of California water.">
+<meta property="og:image" content="penguin.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Penguin, Priced in Water">
+<meta name="twitter:description" content="The first community token to graduate on ICE Market. One PENGUIN is worth 1.796 fluid ounces of California water.">
+<meta name="twitter:image" content="penguin.jpg">
+<style>html{-webkit-text-size-adjust:100%}img{max-width:100%}</style>
+<title>Penguin, Priced in Water</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;700&display=swap">
+
+<style>
+/* Dark-first: the subject is deep water, so the bare :root carries the dark palette and a
+   forced-light viewer gets the shallow-water variant below. */
+:root {
+  --ground:    #06171f;
+  --surface:   #0c2836;
+  --surface-2: #113442;
+  --ink:       #e6f3f8;
+  --ink-dim:   #8ca9b5;
+  --line:      #1b4152;
+  --cyan:      #67cadf;
+  --beak:      #f2822f;
+  --up:        #5fd0a4;
+
+  --display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --body: "Schibsted Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --measure: 62ch;
+  --pad: clamp(20px, 5vw, 56px);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --ground:    #f2f8fb;
+    --surface:   #ffffff;
+    --surface-2: #e7f1f6;
+    --ink:       #06202b;
+    --ink-dim:   #4d6f7d;
+    --line:      #cbdee7;
+    --cyan:      #177f9b;
+    --beak:      #c75c12;
+    --up:        #1a7f5c;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --ground:    #f2f8fb;
+  --surface:   #ffffff;
+  --surface-2: #e7f1f6;
+  --ink:       #06202b;
+  --ink-dim:   #4d6f7d;
+  --line:      #cbdee7;
+  --cyan:      #177f9b;
+  --beak:      #c75c12;
+  --up:        #1a7f5c;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A faint depth gradient, as if the page sits a few metres under. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 620px at 76% -8%, color-mix(in srgb, var(--cyan) 15%, transparent), transparent 62%),
+    radial-gradient(760px 520px at 8% 4%, color-mix(in srgb, var(--beak) 7%, transparent), transparent 66%);
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 var(--pad) 72px;
+}
+
+/* ---- masthead ---------------------------------------------------------- */
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 22px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.masthead b { color: var(--ink); font-weight: 600; }
+
+/* ---- hero -------------------------------------------------------------- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 52px);
+  align-items: center;
+  padding: clamp(32px, 6vw, 60px) 0 clamp(28px, 5vw, 48px);
+}
+.portrait {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  aspect-ratio: 1;
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.portrait figcaption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 26px 14px 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #dff0f7;
+  background: linear-gradient(to top, rgba(4,16,22,0.88), transparent);
+}
+
+.ticker {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(56px, 12vw, 108px);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+.thesis {
+  font-size: clamp(19px, 2.4vw, 25px);
+  line-height: 1.38;
+  max-width: 24ch;
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+.thesis .qty { color: var(--beak); font-weight: 700; white-space: nowrap; }
+
+.quote-row {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+}
+.usd { font-size: clamp(22px, 3.2vw, 30px); font-weight: 600; font-variant-numeric: tabular-nums; }
+.delta {
+  color: var(--up);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid color-mix(in srgb, var(--up) 42%, transparent);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.asof { font-size: 11px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ---- gauge strip ------------------------------------------------------- */
+.gauges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(152px, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.gauge { padding: 18px 20px 16px; border-left: 1px solid var(--line); }
+.gauge:first-child { border-left: 0; }
+.gauge dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 0 0 6px;
+}
+.gauge dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 19px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- sections ---------------------------------------------------------- */
+section { padding: clamp(40px, 7vw, 66px) 0 0; }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin: 0 0 12px;
+}
+h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(27px, 4.2vw, 40px);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+p { max-width: var(--measure); margin: 0 0 16px; }
+p.lede { font-size: 18px; color: var(--ink); }
+.dim { color: var(--ink-dim); }
+
+/* ---- water conversion figure ------------------------------------------- */
+.conversion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 26px 0 0;
+}
+.step { background: var(--surface); padding: 20px; }
+.step .n {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: block;
+  margin-bottom: 8px;
+}
+.step .v {
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  display: block;
+  margin-bottom: 4px;
+}
+.step .v.accent { color: var(--beak); }
+.step small { color: var(--ink-dim); font-size: 13px; line-height: 1.45; display: block; }
+
+/* ---- record ------------------------------------------------------------ */
+.record { border-top: 1px solid var(--line); margin-top: 26px; }
+.entry {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr);
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.entry time {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-dim);
+  letter-spacing: 0.04em;
+}
+.entry p { margin: 0; }
+.entry strong { font-weight: 700; }
+
+/* ---- contract ---------------------------------------------------------- */
+.contract {
+  margin-top: 28px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.contract .addr {
+  font-family: var(--mono);
+  font-size: 13px;
+  word-break: break-all;
+  min-width: 0;
+}
+.contract .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: block;
+  margin-bottom: 5px;
+}
+button.copy {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ground);
+  background: var(--beak);
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: opacity 140ms ease;
+  flex-shrink: 0;
+}
+button.copy:hover { opacity: 0.86; }
+button.copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+/* ---- links ------------------------------------------------------------- */
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.links a {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 18px;
+  background: var(--surface);
+  transition: border-color 140ms ease, color 140ms ease;
+}
+.links a:hover { border-color: var(--cyan); color: var(--cyan); }
+.links a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.links a.primary { background: var(--beak); border-color: var(--beak); color: var(--ground); font-weight: 600; }
+.links a.primary:hover { color: var(--ground); opacity: 0.86; }
+
+footer {
+  margin-top: clamp(48px, 8vw, 80px);
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+}
+footer p { max-width: 70ch; }
+
+@media (max-width: 720px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .portrait { max-width: 260px; }
+  .entry { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <span><b>PENGUIN</b> &nbsp;·&nbsp; Solana</span>
+    <span>Quoted in H2O &nbsp;·&nbsp; California water</span>
+  </div>
+
+  <div class="hero">
+    <figure class="portrait">
+      <img src="penguin.jpg" alt="The Penguin token mascot">
+      <figcaption>PENGUIN / H2O</figcaption>
+    </figure>
+
+    <div>
+      <h1 class="ticker">PENGUIN</h1>
+      <p class="thesis">One PENGUIN is worth <span class="qty">1.796 fluid ounces</span> of California water.</p>
+      <div class="quote-row">
+        <span class="usd">$0.00001937</span>
+        <span class="delta">+272.59% 24h</span>
+        <span class="asof">18 Sep 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <dl class="gauges">
+    <div class="gauge"><dt>Fully diluted</dt><dd>$19,375</dd></div>
+    <div class="gauge"><dt>Volume 24h</dt><dd>$74,296</dd></div>
+    <div class="gauge"><dt>Pool liquidity</dt><dd>$10,454</dd></div>
+    <div class="gauge"><dt>Holders</dt><dd>57</dd></div>
+    <div class="gauge"><dt>Trading fee</dt><dd>2.00%</dd></div>
+  </dl>
+
+  <section>
+    <p class="eyebrow">Why the price is in water</p>
+    <h2>Every other memecoin is priced in SOL. This one is priced in an acre-foot of California water.</h2>
+    <p class="lede">On ICE Market a token launches against a commodity rather than against SOL or a stablecoin. PENGUIN launched against H2O, which tracks the Nasdaq Veles California Water Index — the benchmark price for water rights traded in California, quoted per acre-foot.</p>
+    <p class="dim">That makes the exchange rate below a real one, not a metaphor. It moves when water moves.</p>
+
+    <div class="conversion">
+      <div class="step">
+        <span class="n">The unit</span>
+        <span class="v">1 acre-foot</span>
+        <small>325,851 gallons. Enough to cover an acre of land a foot deep, or supply two California households for a year.</small>
+      </div>
+      <div class="step">
+        <span class="n">Today's water price</span>
+        <span class="v">$450.00</span>
+        <small>Per acre-foot, from the NQH2O index. This is the number the whole market is denominated against.</small>
+      </div>
+      <div class="step">
+        <span class="n">One PENGUIN buys</span>
+        <span class="v accent">1.796 fl oz</span>
+        <small>0.0000000431 of an acre-foot. Roughly a shot glass of water rights, which is the joke and also literally true.</small>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The record</p>
+    <h2>First community token to graduate on ICE Market</h2>
+    <p>A token starts life on a bonding curve. It graduates when enough has been bought to fill that curve, at which point the liquidity moves to a permanent pool and can never be withdrawn — not by the creator, not by the protocol.</p>
+
+    <div class="record">
+      <div class="entry">
+        <time datetime="2026-09-17T19:38Z">17 Sep 2026, 19:38 UTC</time>
+        <p>Launched against H2O with a 2% trading fee. <strong>Curve opens.</strong></p>
+      </div>
+      <div class="entry">
+        <time datetime="2026-09-17">17 Sep 2026</time>
+        <p>Curve fills at a $35,000 market cap. <strong>Graduated.</strong> Liquidity migrates to a locked pool.</p>
+      </div>
+      <div class="entry">
+        <time datetime="2026-09-18">Since graduation</time>
+        <p><strong>1.2017 H2O</strong> paid out to holders — about $541 of California water, distributed automatically rather than claimed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Holding it</p>
+    <h2>Holders are paid in water, not dollars</h2>
+    <p>Half of every trading fee goes to the people holding PENGUIN, and it arrives denominated in H2O. You are not paid a share of revenue in a stablecoin; you are paid in the commodity the market is priced against. Payouts run on a schedule and land in your wallet on their own.</p>
+
+    <div class="contract">
+      <div class="addr">
+        <span class="label">Contract address</span>
+        <span id="ca">79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice</span>
+      </div>
+      <button class="copy" id="copy" type="button">Copy</button>
+    </div>
+
+    <div class="links">
+      <a class="primary" href="https://www.icemarket.fun/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice">Trade on ICE Market</a>
+      <a href="https://dexscreener.com/solana/Gg5RDBD9Gjqfp1VbMc1dWDiqc1PHooRiaFai2CVySZqZ">DexScreener</a>
+      <a href="https://solscan.io/token/79WXymKrRSVVxGZY8qBXAtySYNPGkvyKWdu9Zv27Cice">Solscan</a>
+      <a href="https://www.icemarket.fun/commodities/H2O">About H2O</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>PENGUIN is a memecoin. Its price is quoted against a water index; it is not a claim on water, and nothing here is a promise about price. Figures shown were read from the ICE Market indexer on 18 September 2026 and move continuously.</p>
+  </footer>
+
+</div>
+
+<script>
+  const btn = document.getElementById("copy");
+  btn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(document.getElementById("ca").textContent.trim());
+      btn.textContent = "Copied";
+    } catch {
+      btn.textContent = "Press ⌘C";
+    }
+    setTimeout(() => { btn.textContent = "Copy"; }, 1800);
+  });
+</script>
+
+</body>
+</html>
